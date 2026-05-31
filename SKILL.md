@@ -120,6 +120,7 @@ Every site has a **logo** and a **tagline**.
 | Version control | **GitHub** (public repos by default unless data-sensitive) |
 | Research / search | **Exa** |
 | Product analytics | **PostHog** (wire on launch) |
+| Email | **Resend** (transactional email + email auth / magic links, when a project needs them) |
 | Framework | **Next.js (App Router) + Tailwind v4 + shadcn/ui** |
 
 Workflow: **commit + push every change** (all files, not just task-related ones), and keep `CLAUDE.md` / docs in sync with code.
@@ -145,7 +146,7 @@ Apply these up front, before being asked:
 - [ ] Built UI with `frontend-design` skill
 - [ ] `security-review` run before shipping
 - [ ] No em-dashes, no company names
-- [ ] Stack: Vercel · Google Cloud · Gemini · GitHub · Exa · PostHog
+- [ ] Stack: Vercel · Google Cloud · Gemini · GitHub · Exa · PostHog · Resend (email/auth, when needed)
 - [ ] Committed, pushed, deployed, docs updated
 
 ## 13. How to work with William (note to the agent)

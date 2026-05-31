@@ -18,7 +18,7 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Required pages**: privacy/disclaimer, about, "Built by William Zhu" footer
 - **OG image**: logo + tagline only
 - **Process**: `frontend-design` for UI, `security-review` before shipping
-- **Stack**: Vercel · Google Cloud · Gemini · GitHub · Exa · PostHog · Next.js + Tailwind + shadcn/ui
+- **Stack**: Vercel · Google Cloud · Gemini · GitHub · Exa · PostHog · Resend · Next.js + Tailwind + shadcn/ui
 
 ## How to use it
 
