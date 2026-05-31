@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large & high-contrast type, logo + tagline branding, pagination, minimal OG image, required privacy page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Apply on every website/web-app build."
-version: 1.1.0
+version: 1.2.0
 license: MIT
 metadata:
   hermes:
@@ -99,9 +99,12 @@ Every site has a **logo** and a **tagline**.
 
 ## 8. Social / OG preview image
 
-- **Minimal: logo + tagline only.** No counts, eyebrows, or decorative pills.
-- Standard **1200×630**, generated at build (e.g. `next/og`).
-- Remember: platforms **cache** OG cards. Refresh via their debugger or a throwaway `?v=` query string.
+- **Logo only, no text at all.** No tagline, counts, eyebrows, or decorative pills baked into the image.
+- **Make the logo really large**, sized to fill the frame height with only a small margin. A bold, oversized mark reads best as a thumbnail in a feed.
+- The tagline still lives as the **OG / Twitter title** (the platform renders it as text under the card), so it never needs to be inside the image.
+- Use a **high-resolution logo source** (e.g. 1024px square) so it stays crisp when scaled up.
+- Standard **1200×630**, generated at build (e.g. `next/og`), on the brand background.
+- Remember: platforms **cache** OG cards. Refresh via their debugger (e.g. LinkedIn Post Inspector) or a throwaway `?v=` query string.
 
 ## 9. Writing & voice
 
@@ -145,7 +148,7 @@ Apply these up front, before being asked:
 - [ ] Pagination on long lists (~12/page)
 - [ ] Header not sticky
 - [ ] Logo sized up, no mobile overlap
-- [ ] Minimal logo + tagline OG image
+- [ ] OG image: logo only, sized really large to fill the frame (no text)
 - [ ] System-default light/dark toggle
 - [ ] Tagline set as tab title + OG title
 - [ ] Privacy / disclaimer page
