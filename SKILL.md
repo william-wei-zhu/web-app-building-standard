@@ -1,6 +1,6 @@
 ---
 name: web-app-building-standard
-description: "William's standard for building web apps — simplicity-first, large & high-contrast type, logo + tagline branding, pagination, minimal OG image, required privacy page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Apply on every website/web-app build."
+description: "William's standard for building web apps: simplicity-first, large & high-contrast type, logo + tagline branding, pagination, minimal OG image, required privacy page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Apply on every website/web-app build."
 version: 1.0.0
 license: MIT
 metadata:
@@ -16,24 +16,26 @@ A reusable standard for building small, polished public web apps. It exists so t
 
 The single most important rule: **simplify**.
 
+> Note to self: do not use em-dashes anywhere in this project's writing. Use a comma, colon, period, semicolon, or "and / but / so" instead.
+
 ---
 
-## Workflow — start from the core, then build outward
+## Workflow: start from the core, then build outward
 
-Every project starts from a **pain point**. Before building any UI, nail the core identity **in this order** — the rest of the site is built entirely on top of it:
+Every project starts from a **pain point**. Before building any UI, nail the core identity **in this order**. The rest of the site is built entirely on top of it:
 
-1. **Pain point** — the specific problem this app solves, and for whom.
-2. **Web domain** — secure it.
+1. **Pain point**: the specific problem this app solves, and for whom.
+2. **Web domain**: secure it.
 3. **Company / product name.**
 4. **Logo.**
 5. **Tagline.**
 6. **Mission statement.**
 
-Only once these are settled do you build out the rest (pages, features, data) — all derived from them. The **tagline** drives the hero, tab title, and OG image; the **logo** drives the header, favicon, and OG; the **mission** drives the about page and the site's voice. If a later decision feels arbitrary, return to the core and derive it.
+Only once these are settled do you build out the rest (pages, features, data), all derived from them. The **tagline** drives the hero, tab title, and OG image; the **logo** drives the header, favicon, and OG; the **mission** drives the about page and the site's voice. If a later decision feels arbitrary, return to the core and derive it.
 
 ---
 
-## 1. First principle — simplicity ("Simpli-T")
+## 1. First principle: simplicity ("Simpli-T")
 
 Default to **removing, not adding**. When unsure, ship the plainer version.
 
@@ -43,11 +45,11 @@ Default to **removing, not adding**. When unsure, ship the plainer version.
 
 ## 2. Typography & sizing
 
-Big and legible — design as if for an older reader ("easy for my grandma to read").
+Big and legible. Design as if for an older reader ("easy for my grandma to read").
 
 - **Global zoom ~120%** (e.g. `html { font-size: 120% }`) so all rem-based type and spacing scale up uniformly.
 - Bump the type scale: body ≈ **1.2rem**, with a generous body line-height (~**1.7**).
-- **Fonts are principles, not fixed faces.** Choose per project, but always:
+- **Fonts are principles, not fixed faces.** Choose per project, but always include:
   - a **characterful display face** for headings (a serif with personality works well),
   - a **highly readable body face** (editorial serif or a clean sans),
   - a **monospace** for data, labels, and small-caps eyebrows (uppercase, tracked ~0.16em).
@@ -55,7 +57,7 @@ Big and legible — design as if for an older reader ("easy for my grandma to re
 
 ## 3. Color & contrast (accessibility)
 
-High contrast, **"all black or all white"** — never faded gray text.
+High contrast, **"all black or all white"**, never faded gray text.
 
 - Use **solid foreground** on background. **No opacity grays** for text (avoid `text-foreground/70`, etc.).
 - Secondary/muted text uses a **near-ink (light theme) / near-paper (dark theme)** token, not a transparent foreground.
@@ -68,17 +70,17 @@ High contrast, **"all black or all white"** — never faded gray text.
 - A small toggle lives in the header.
 - High-contrast in both modes: light = near-black on white; dark = near-white on near-black.
 
-## 5. Brand — logo & tagline
+## 5. Brand: logo & tagline
 
 Every site has a **logo** and a **tagline**.
 
-- **Logo** is used everywhere it belongs: header, favicon (`icon.png`), apple touch icon, and the OG image. Keep a vector source in the repo. Size it up — but on mobile it must never crowd the nav (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
+- **Logo** is used everywhere it belongs: header, favicon (`icon.png`), apple touch icon, and the OG image. Keep a vector source in the repo. Size it up, but on mobile it must never crowd the nav (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
 - **Tagline**: one elegant line with **italic accent emphasis** on the key phrase. The tagline is also the **browser tab title** and the **OG/Twitter title**.
 
 ## 6. Layout & navigation
 
 - **Pagination** on any long list: ~**12 per page**, `Prev · 1 2 3 … · Next`. Reset to page 1 when filters change, smooth-scroll to the list top on page change, and show the visible range (e.g. "01–12 of 45").
-- **Header is NOT sticky** — it scrolls away with the page (don't freeze it at the top).
+- **Header is NOT sticky**: it scrolls away with the page (don't freeze it at the top).
 - **Mobile-friendly is non-negotiable.** Always verify at ~**375px**: nothing overlaps or overflows.
 
 ## 7. Required pages
@@ -96,10 +98,10 @@ Every site has a **logo** and a **tagline**.
 ## 9. Writing & voice
 
 - **No em-dashes.** Use a comma, colon, period, semicolon, or "and / but / so" instead.
-- **No specific company names** in placeholders or examples — use generic phrasing.
+- **No specific company names** in placeholders or examples; use generic phrasing.
 - Plain, confident copy for a non-technical reader.
 
-## 10. Process — design & security
+## 10. Process: design & security
 
 - Build distinctive UI with the **`frontend-design` skill** to avoid generic AI aesthetics.
 - Before shipping, run a **security check** (the `security-review` skill) over the diff:
@@ -113,8 +115,8 @@ Every site has a **logo** and a **tagline**.
 | Concern | Default |
 |---|---|
 | Host + deploy | **Vercel** (deploy via CLI) |
-| Data | **Google Cloud — Firestore** |
-| AI | **Gemini via Vertex AI** — the fastest model (currently 3.1 Flash Lite) |
+| Data | **Google Cloud** (Firestore) |
+| AI | **Gemini via Vertex AI**, the fastest model (currently 3.1 Flash Lite) |
 | Version control | **GitHub** (public repos by default unless data-sensitive) |
 | Research / search | **Exa** |
 | Product analytics | **PostHog** (wire on launch) |
@@ -126,10 +128,10 @@ Workflow: **commit + push every change** (all files, not just task-related ones)
 
 Apply these up front, before being asked:
 
-- [ ] Core identity defined first: pain point → domain → name → logo → tagline → mission
+- [ ] Core identity defined first: pain point, domain, name, logo, tagline, mission
 - [ ] Logo + tagline in place
 - [ ] Big fonts (~120% base), generous line-height
-- [ ] Solid high-contrast color — no gray text
+- [ ] Solid high-contrast color, no gray text
 - [ ] Simplify / remove anything unnecessary
 - [ ] Pagination on long lists (~12/page)
 - [ ] Header not sticky
@@ -148,6 +150,6 @@ Apply these up front, before being asked:
 
 ## 13. How to work with William (note to the agent)
 
-- He iterates **visually** and asks **"what do you think?"** — give a real **recommendation with trade-offs**, not just a menu of options. Lead with the recommendation, then act.
-- He asks **"where is X / how do I access it?"** — answer with the **exact URL and any credentials**.
+- He iterates **visually** and asks **"what do you think?"**: give a real **recommendation with trade-offs**, not just a menu of options. Lead with the recommendation, then act.
+- He asks **"where is X / how do I access it?"**: answer with the **exact URL and any credentials**.
 - He **favors deleting over adding**. When in doubt, cut.
