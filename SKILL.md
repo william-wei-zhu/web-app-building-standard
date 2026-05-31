@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large & high-contrast type, logo + tagline branding, pagination, minimal OG image, required privacy page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Apply on every website/web-app build."
-version: 1.0.0
+version: 1.1.0
 license: MIT
 metadata:
   hermes:
@@ -81,7 +81,15 @@ Every site has a **logo** and a **tagline**.
 
 - **Pagination** on any long list: ~**12 per page**, `Prev · 1 2 3 … · Next`. Reset to page 1 when filters change, smooth-scroll to the list top on page change, and show the visible range (e.g. "01–12 of 45").
 - **Header is NOT sticky**: it scrolls away with the page (don't freeze it at the top).
-- **Mobile-friendly is non-negotiable.** Always verify at ~**375px**: nothing overlaps or overflows.
+- **Mobile layout optimization is non-negotiable.** A desktop layout shrunk down is not a mobile layout. Take a real screenshot at ~**375 to 390px** and fix it before shipping. Check each item:
+  - [ ] **No horizontal overflow or scrollbar.** Nothing clips at the right edge.
+  - [ ] **Scale display headings down on mobile** (responsive type, e.g. `text-4xl sm:text-7xl`). Hero headings sized for desktop overflow on phones.
+  - [ ] **No forced no-wrap in headings.** Avoid non-breaking spaces (`&nbsp;`) and `whitespace-nowrap` on long phrases; they push text off-screen instead of letting it wrap.
+  - [ ] **Gate typographic flourishes to `sm` and up.** Drop caps, oversized first letters, and very tight leading crowd a narrow column; show them only on wider screens.
+  - [ ] **Stack multi-column rows into one column on mobile.** A `justify-between` two-column row (footer credits, split nav) reads as two disconnected blocks on a phone.
+  - [ ] **Trim oversized vertical padding** so the hero does not push the real content below the fold.
+  - [ ] **Tap targets are comfortably large** (~44px) and not crowded together.
+  - [ ] **The header logo never crowds the nav** (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
 
 ## 7. Required pages
 
@@ -142,7 +150,7 @@ Apply these up front, before being asked:
 - [ ] Tagline set as tab title + OG title
 - [ ] Privacy / disclaimer page
 - [ ] "Built by William Zhu" footer + LinkedIn
-- [ ] Mobile-friendly, verified at 375px
+- [ ] **Mobile layout optimized + verified at 375 to 390px** (no overflow, headings scaled down, no `&nbsp;` clipping, flourishes gated to `sm+`, multi-column rows stacked); see section 6
 - [ ] Built UI with `frontend-design` skill
 - [ ] `security-review` run before shipping
 - [ ] No em-dashes, no company names

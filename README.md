@@ -14,7 +14,7 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Color & contrast**: all black or all white, no gray text
 - **Theme**: light + dark, system default
 - **Brand**: logo and tagline, everywhere they belong
-- **Layout**: pagination, non-sticky header, mobile-friendly (375px)
+- **Layout**: pagination, non-sticky header, mobile layout optimization (verified at 375 to 390px: responsive headings, no `&nbsp;` clipping, flourishes gated to `sm+`, rows stacked)
 - **Required pages**: privacy/disclaimer, about, "Built by William Zhu" footer
 - **OG image**: logo + tagline only
 - **Process**: `frontend-design` for UI, `security-review` before shipping
