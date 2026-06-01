@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large & high-contrast type, logo + tagline branding, pagination, minimal OG image, required privacy page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Apply on every website/web-app build."
-version: 1.2.0
+version: 1.3.0
 license: MIT
 metadata:
   hermes:
@@ -87,6 +87,7 @@ Every site has a **logo** and a **tagline**.
   - [ ] **No forced no-wrap in headings.** Avoid non-breaking spaces (`&nbsp;`) and `whitespace-nowrap` on long phrases; they push text off-screen instead of letting it wrap.
   - [ ] **Gate typographic flourishes to `sm` and up.** Drop caps, oversized first letters, and very tight leading crowd a narrow column; show them only on wider screens.
   - [ ] **Stack multi-column rows into one column on mobile.** A `justify-between` two-column row (footer credits, split nav) reads as two disconnected blocks on a phone.
+  - [ ] **Long control rows must not overflow.** Pagination, toolbars, and tab strips grow as content grows. Let them wrap (`flex-wrap justify-center`) and shrink controls on mobile (e.g. icon-only Prev/Next), so a `justify-between` row never pushes a button off the right edge (which adds blank horizontal scroll space).
   - [ ] **Trim oversized vertical padding** so the hero does not push the real content below the fold.
   - [ ] **Tap targets are comfortably large** (~44px) and not crowded together.
   - [ ] **The header logo never crowds the nav** (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
