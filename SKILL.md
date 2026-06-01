@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large & high-contrast type, logo + tagline branding, pagination, minimal OG image, required privacy page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Apply on every website/web-app build."
-version: 1.3.0
+version: 1.4.0
 license: MIT
 metadata:
   hermes:
@@ -75,7 +75,7 @@ High contrast, **"all black or all white"**, never faded gray text.
 Every site has a **logo** and a **tagline**.
 
 - **Logo** is used everywhere it belongs: header, favicon (`icon.png`), apple touch icon, and the OG image. Keep a vector source in the repo. Size it up, but on mobile it must never crowd the nav (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
-- **Tagline**: one elegant line with **italic accent emphasis** on the key phrase. The tagline is also the **browser tab title** and the **OG/Twitter title**.
+- **Tagline**: one elegant line with **italic accent emphasis** on the key phrase. It anchors the hero and the **browser tab title**. In the social card it is the **OG/Twitter description**, with the **app name as the OG/Twitter title** (see §8).
 
 ## 6. Layout & navigation
 
@@ -98,13 +98,25 @@ Every site has a **logo** and a **tagline**.
 - An **about / methodology page** explaining what the site is and how it works.
 - A **footer** with attribution **"Built by William Zhu"** linking `https://www.linkedin.com/in/william-wei-zhu/`, plus any license/legal links.
 
-## 8. Social / OG preview image
+## 8. Social / OG preview link
 
-- **Logo only, no text at all.** No tagline, counts, eyebrows, or decorative pills baked into the image.
+The card has two parts: the **image** and the **share text** under it. Keep the words out of the image and in the text.
+
+**The image:**
+- **Logo only, no text at all.** No app name, tagline, counts, eyebrows, or decorative pills baked into the image.
 - **Make the logo really large**, sized to fill the frame height with only a small margin. A bold, oversized mark reads best as a thumbnail in a feed.
-- The tagline still lives as the **OG / Twitter title** (the platform renders it as text under the card), so it never needs to be inside the image.
 - Use a **high-resolution logo source** (e.g. 1024px square) so it stays crisp when scaled up.
 - Standard **1200×630**, generated at build (e.g. `next/og`), on the brand background.
+
+**The share text (this is where the words go):**
+- **OG / Twitter title = the app name** (e.g. "SkatePuck").
+- **OG / Twitter description = the tagline** (e.g. "Skate to where your market is going.").
+- The platform renders the title bold with the description beneath, so the words never belong inside the image.
+
+**Implementation:**
+- Define the preview at the **site root**, not only on dynamic subpages. If only subpages have an OG image, sharing the homepage renders no preview at all (a common bug).
+- Set a **`metadataBase`** so image URLs resolve to absolute `https://` URLs.
+- Provide **both** `opengraph-image` and `twitter-image` (App Router file conventions) and use `summary_large_image` for Twitter/X.
 - Remember: platforms **cache** OG cards. Refresh via their debugger (e.g. LinkedIn Post Inspector) or a throwaway `?v=` query string.
 
 ## 9. Writing & voice
@@ -150,8 +162,9 @@ Apply these up front, before being asked:
 - [ ] Header not sticky
 - [ ] Logo sized up, no mobile overlap
 - [ ] OG image: logo only, sized really large to fill the frame (no text)
+- [ ] OG/Twitter title = app name, description = tagline; preview defined at the site root (both `opengraph-image` + `twitter-image`)
 - [ ] System-default light/dark toggle
-- [ ] Tagline set as tab title + OG title
+- [ ] Tagline set as tab title
 - [ ] Privacy / disclaimer page
 - [ ] "Built by William Zhu" footer + LinkedIn
 - [ ] **Mobile layout optimized + verified at 375 to 390px** (no overflow, headings scaled down, no `&nbsp;` clipping, flourishes gated to `sm+`, multi-column rows stacked); see section 6
