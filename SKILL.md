@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
-description: "William's standard for building web apps: simplicity-first, large & high-contrast type, logo + tagline branding, pagination, minimal OG image, required privacy page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Apply on every website/web-app build."
-version: 1.4.0
+description: "William's standard for building web apps: simplicity-first, large & high-contrast type, logo + tagline branding, pagination, minimal OG image, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Apply on every website/web-app build."
+version: 1.5.0
 license: MIT
 metadata:
   hermes:
@@ -98,7 +98,36 @@ Every site has a **logo** and a **tagline**.
 - An **about / methodology page** explaining what the site is and how it works.
 - A **footer** with attribution **"Built by William Zhu"** linking `https://www.linkedin.com/in/william-wei-zhu/`, plus any license/legal links.
 
-## 8. Social / OG preview link
+## 8. The technical walk-through page (optional, hidden)
+
+A single **unlisted** page that explains, in plain language with visuals, **exactly what happens when a user performs the core action**. It exists for demos, interviews, portfolio reviewers, and curious stakeholders: people who need to understand the system without reading the code. Add it when explaining the app clearly is worth it (showing the work to a prospective employer, say); skip it for a purely utilitarian tool.
+
+**Hidden by default.** Reachable only by typing the URL.
+- `robots: { index: false, follow: false }`, and keep it out of `sitemap.ts`.
+- **Not linked** from header, footer, or home.
+- **No password needed**, because the page documents architecture only and shows **zero secrets** (no keys, tokens, or private values). Add a light gate only if it must expose something sensitive.
+- A short, memorable path is fine (e.g. `/docs`); it leaks nothing.
+
+**Two audiences at once.** Lead with plain language a non-technical reader follows, but **name the real components and their exact features** so an engineer respects it. Not "an AI model" but the model id and provider; not "search" but the specific search product and its parameters. Both audiences read the same page.
+
+**Shape it for few words, lots of visuals:**
+- A one-line summary of the whole flow up top.
+- A visual **end-to-end overview** (the pipeline at a glance).
+- The journey as a handful of **steps / "acts"**, each one **a single illustration plus a few words**, with a precise one-line technical caption.
+- A compact **"what it runs on"** layer naming exact features.
+- Optional **"notes for engineers"**: the few non-obvious decisions that show real depth.
+
+**Visuals match the brand, with no new dependencies.**
+- **Hand-build** the diagrams and illustrations in **SVG / CSS** using the site's own tokens (fonts, accent, borders). Do **not** drop in stock photos or a charting / diagram library (Mermaid, D3); they fight the brand and add weight.
+- Motion is **refined and one-shot**: elements fade or draw themselves in **once** as they scroll into view. **No auto-looping.** Always honor `prefers-reduced-motion`.
+- Verify it in light, dark, and at 375 to 390px like any other page (§6).
+
+**Accuracy is the whole point.**
+- Document the **real** stack and the **real** parameters (model ids, the exact search product and options, thresholds, timeouts, rate limits). Wrong details lose the technical audience instantly.
+- **Never put a secret on the page.** Architecture only.
+- Treat it as living: when the pipeline changes, update the page.
+
+## 9. Social / OG preview link
 
 The card has two parts: the **image** and the **share text** under it. Keep the words out of the image and in the text.
 
@@ -119,13 +148,13 @@ The card has two parts: the **image** and the **share text** under it. Keep the 
 - Provide **both** `opengraph-image` and `twitter-image` (App Router file conventions) and use `summary_large_image` for Twitter/X.
 - Remember: platforms **cache** OG cards. Refresh via their debugger (e.g. LinkedIn Post Inspector) or a throwaway `?v=` query string.
 
-## 9. Writing & voice
+## 10. Writing & voice
 
 - **No em-dashes.** Use a comma, colon, period, semicolon, or "and / but / so" instead.
 - **No specific company names** in placeholders or examples; use generic phrasing.
 - Plain, confident copy for a non-technical reader.
 
-## 10. Process: design & security
+## 11. Process: design & security
 
 - Build distinctive UI with the **`frontend-design` skill** to avoid generic AI aesthetics.
 - Before shipping, run a **security check** (the `security-review` skill) over the diff:
@@ -134,7 +163,7 @@ The card has two parts: the **image** and the **share text** under it. Keep the 
   - public endpoints have **rate limiting + bot protection**;
   - all user input is validated.
 
-## 11. Stack (defaults)
+## 12. Stack (defaults)
 
 | Concern | Default |
 |---|---|
@@ -149,7 +178,7 @@ The card has two parts: the **image** and the **share text** under it. Keep the 
 
 Workflow: **commit + push every change** (all files, not just task-related ones), and keep `CLAUDE.md` / docs in sync with code.
 
-## 12. Standard build checklist
+## 13. Standard build checklist
 
 Apply these up front, before being asked:
 
@@ -166,6 +195,7 @@ Apply these up front, before being asked:
 - [ ] System-default light/dark toggle
 - [ ] Tagline set as tab title
 - [ ] Privacy / disclaimer page
+- [ ] (If a demo / portfolio matters) Hidden technical walk-through page: unlisted + `noindex`, not linked anywhere, few words + on-brand SVG visuals, names the real stack, shows no secrets
 - [ ] "Built by William Zhu" footer + LinkedIn
 - [ ] **Mobile layout optimized + verified at 375 to 390px** (no overflow, headings scaled down, no `&nbsp;` clipping, flourishes gated to `sm+`, multi-column rows stacked); see section 6
 - [ ] Built UI with `frontend-design` skill
@@ -174,7 +204,7 @@ Apply these up front, before being asked:
 - [ ] Stack: Vercel · Google Cloud · Gemini · GitHub · Exa · PostHog · Resend (email/auth, when needed)
 - [ ] Committed, pushed, deployed, docs updated
 
-## 13. How to work with William (note to the agent)
+## 14. How to work with William (note to the agent)
 
 - He iterates **visually** and asks **"what do you think?"**: give a real **recommendation with trade-offs**, not just a menu of options. Lead with the recommendation, then act.
 - He asks **"where is X / how do I access it?"**: answer with the **exact URL and any credentials**.

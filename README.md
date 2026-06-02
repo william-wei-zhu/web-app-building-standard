@@ -16,6 +16,7 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Brand**: logo and tagline, everywhere they belong
 - **Layout**: pagination, non-sticky header, mobile layout optimization (verified at 375 to 390px: responsive headings, no `&nbsp;` clipping, flourishes gated to `sm+`, rows stacked)
 - **Required pages**: privacy/disclaimer, about, "Built by William Zhu" footer
+- **Technical walk-through (optional, hidden)**: an unlisted, `noindex` page that explains what happens behind the scenes, in plain language plus on-brand SVG visuals, naming the real stack and showing no secrets
 - **Social preview**: image is the logo only, sized really large (no text); title = app name, description = tagline; defined at the site root
 - **Process**: `frontend-design` for UI, `security-review` before shipping
 - **Stack**: Vercel · Google Cloud · Gemini · GitHub · Exa · PostHog · Resend · Next.js + Tailwind + shadcn/ui
