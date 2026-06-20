@@ -12,7 +12,7 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Brand-cloning override**: when an app is meant to look native to a target brand (e.g. built to feel like it's made by Exa), fidelity to that brand wins over the standard's own visual conventions; the rest of the standard still applies
 - **Simplicity first**: remove before you add
 - **Typography**: large and legible (~120% base), fonts as principles not fixed faces
-- **Color & contrast**: all black or all white, no gray text
+- **Color & contrast**: all black or all white, no gray text; never a left-border accent-bar
 - **Theme**: light + dark, system default
 - **Brand**: logo and tagline, everywhere they belong
 - **Layout**: pagination, non-sticky header, mobile layout optimization (verified at 375 to 390px: responsive headings, no `&nbsp;` clipping, flourishes gated to `sm+`, rows stacked)

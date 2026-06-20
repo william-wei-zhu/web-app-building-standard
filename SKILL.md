@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large & high-contrast type, logo + tagline branding, pagination, minimal OG image, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Apply on every website/web-app build."
-version: 1.5.0
+version: 1.6.0
 license: MIT
 metadata:
   hermes:
@@ -75,6 +75,7 @@ High contrast, **"all black or all white"**, never faded gray text.
 - Use **solid foreground** on background. **No opacity grays** for text (avoid `text-foreground/70`, etc.).
 - Secondary/muted text uses a **near-ink (light theme) / near-paper (dark theme)** token, not a transparent foreground.
 - **One accent color**, used sparingly (links, key emphasis, a single rule). Headings use ink, not the accent.
+- **Never, ever use a left-border accent-bar.** Do not put a colored vertical bar on the left edge of cards, callouts, blockquotes, list items, or section headers (e.g. `border-l-4 border-accent`, the classic "colored stripe down the side" treatment). It is a generic AI-template tell and it is banned outright. To set content apart, use whitespace, a full hairline border, a subtle background, or weight and size instead.
 - Verify both themes read cleanly.
 
 ## 4. Theme (light + dark)
@@ -199,6 +200,7 @@ Apply these up front, before being asked:
 - [ ] Logo + tagline in place
 - [ ] Big fonts (~120% base), generous line-height
 - [ ] Solid high-contrast color, no gray text
+- [ ] No left-border accent-bars anywhere (no `border-l` accent stripes on cards/callouts/blockquotes)
 - [ ] Simplify / remove anything unnecessary
 - [ ] Pagination on long lists (~12/page)
 - [ ] Header not sticky
