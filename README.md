@@ -9,6 +9,7 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 ## What it covers
 
 - **Workflow**: start from the core (pain point, domain, name, logo, tagline, mission), then build outward
+- **Brand-cloning override**: when an app is meant to look native to a target brand (e.g. built to feel like it's made by Exa), fidelity to that brand wins over the standard's own visual conventions; the rest of the standard still applies
 - **Simplicity first**: remove before you add
 - **Typography**: large and legible (~120% base), fonts as principles not fixed faces
 - **Color & contrast**: all black or all white, no gray text

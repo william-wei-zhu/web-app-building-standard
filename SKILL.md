@@ -35,6 +35,19 @@ Only once these are settled do you build out the rest (pages, features, data), a
 
 ---
 
+## 0. When this standard yields: cloning a target brand
+
+This standard is opinionated, but it is **not** meant to override deliberate brand mimicry. When the goal is for an app to look native to a specific existing product or company (for example, a tool built to feel like it was made by Exa, Stripe, or Linear, often for a demo, take-home, or partner-facing build), **fidelity to that target brand wins** over this standard's own visual conventions.
+
+In that mode:
+
+- **Use the target's real assets and system, do not invent.** Their actual logo, header, footer, fonts, colors, radii, and layout patterns. Lift them from a real reference (e.g. the target's site or an existing on-brand build) rather than approximating.
+- These visual rules **defer to the target**: the logo rules (§5), light/dark + system theme (§4), non-sticky header (§6), the ~120% type scale (§2), and the OG "logo only" image (§9) all bend to match the target instead.
+- **What still holds, always:** the core identity workflow (§0-adjacent: pain point → domain → name → tagline → mission), simplicity (§1), mobile optimization and the 375-390px pass (§6), the required pages and "Built by William Zhu" attribution (§7), writing voice incl. no em-dashes (§10), security review + secrets hygiene (§11), the stack defaults (§12), and shipping/commit discipline (§13). Accessibility *intent* (legible, high-contrast) holds even when the exact tokens come from the target.
+- **Record the deviation.** Note in the project's `CLAUDE.md` that the frontend intentionally clones brand X and which conventions it overrides, so it reads as a decision, not a drift.
+
+Reference implementation: [exavantage.com](https://exavantage.com) (Exa Vantage), an FSI research tool deliberately skinned as Exa (real Exa logo, header, footer, fonts, palette) while keeping the rest of this standard.
+
 ## 1. First principle: simplicity ("Simpli-T")
 
 Default to **removing, not adding**. When unsure, ship the plainer version.
