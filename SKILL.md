@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
-description: "William's standard for building web apps: simplicity-first, large & high-contrast type, logo + tagline branding, pagination, minimal OG image, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Apply on every website/web-app build."
-version: 1.6.0
+description: "William's standard for building web apps: simplicity-first, large & high-contrast type, lead-with-the-conclusion hierarchy, logo + tagline branding, designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, minimal OG image, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Apply on every website/web-app build."
+version: 1.7.0
 license: MIT
 metadata:
   hermes:
@@ -42,8 +42,8 @@ This standard is opinionated, but it is **not** meant to override deliberate bra
 In that mode:
 
 - **Use the target's real assets and system, do not invent.** Their actual logo, header, footer, fonts, colors, radii, and layout patterns. Lift them from a real reference (e.g. the target's site or an existing on-brand build) rather than approximating.
-- These visual rules **defer to the target**: the logo rules (§5), light/dark + system theme (§4), non-sticky header (§6), the ~120% type scale (§2), and the OG "logo only" image (§9) all bend to match the target instead.
-- **What still holds, always:** the core identity workflow (§0-adjacent: pain point → domain → name → tagline → mission), simplicity (§1), mobile optimization and the 375-390px pass (§6), the required pages and "Built by William Zhu" attribution (§7), writing voice incl. no em-dashes (§10), security review + secrets hygiene (§11), the stack defaults (§12), and shipping/commit discipline (§13). Accessibility *intent* (legible, high-contrast) holds even when the exact tokens come from the target.
+- These visual rules **defer to the target**: the logo rules (§6), light/dark + system theme (§5), non-sticky header (§7), the ~120% type scale (§2), and the OG "logo only" image (§12) all bend to match the target instead.
+- **What still holds, always:** the core identity workflow (pain point → domain → name → tagline → mission), simplicity (§1), composition and hierarchy discipline (§4), the input-and-states discipline (§8) and generated-content honesty (§9), mobile optimization and the 375-390px pass (§7), the required pages and "Built by William Zhu" attribution (§10), writing voice incl. no em-dashes (§13), security review + secrets hygiene (§14), the stack defaults (§15), and shipping/commit discipline (§16). Accessibility *intent* (legible, high-contrast) holds even when the exact tokens come from the target.
 - **Record the deviation.** Note in the project's `CLAUDE.md` that the frontend intentionally clones brand X and which conventions it overrides, so it reads as a decision, not a drift.
 
 Reference implementation: [exavantage.com](https://exavantage.com) (Exa Vantage), an FSI research tool deliberately skinned as Exa (real Exa logo, header, footer, fonts, palette) while keeping the rest of this standard.
@@ -75,23 +75,33 @@ High contrast, **"all black or all white"**, never faded gray text.
 - Use **solid foreground** on background. **No opacity grays** for text (avoid `text-foreground/70`, etc.).
 - Secondary/muted text uses a **near-ink (light theme) / near-paper (dark theme)** token, not a transparent foreground.
 - **One accent color**, used sparingly (links, key emphasis, a single rule). Headings use ink, not the accent.
-- **Never, ever use a left-border accent-bar.** Do not put a colored vertical bar on the left edge of cards, callouts, blockquotes, list items, or section headers (e.g. `border-l-4 border-accent`, the classic "colored stripe down the side" treatment). It is a generic AI-template tell and it is banned outright. To set content apart, use whitespace, a full hairline border, a subtle background, or weight and size instead.
+- **Never an accent bar on any edge.** Do not put a colored stripe on the **left or top** edge of cards, callouts, blockquotes, list items, or section headers (e.g. `border-l-4 border-accent`, or a `h-1.5` colored top bar). The "colored stripe down the side or across the top" treatment is a generic AI-template tell and is banned outright. To set content apart, use whitespace, a full hairline border, a subtle background, weight and size, or a small dot / numbered marker / ring instead.
+- **Cards and callouts share one consistent style.** Cards are a **thin full border on a subtle surface**, used consistently across the app. Callout boxes share **one light style** (a small uppercase tracked kicker over a semibold body), not a heavy dark filled box (dark fills feel unrefined and tend to clip at a frame edge).
 - Verify both themes read cleanly.
 
-## 4. Theme (light + dark)
+## 4. Composition, hierarchy & motion
+
+How content is arranged carries as much weight as how it is styled.
+
+- **Lead with the conclusion.** A headline states the **takeaway**, not a category label ("Where to win", not "Market segments"). Make the most important thing on each view the conclusion the reader should leave with (bottom line up front).
+- **One focal point per view.** Establish a clear visual hierarchy: one dominant element, the rest clearly subordinate. One strong element beats several competing ones (echoes §1).
+- **Design to the frame for fixed-format artifacts.** When a deliverable has a fixed format (a card, a slide, an OG image, a PDF or export), design to that frame and **curate content to fit it**: clamp, truncate, or paginate rather than letting content overflow or reflow unpredictably. Budget the space up front.
+- **Motion is refined and one-shot.** Elements fade or draw in **once** as they enter view; **never auto-loop** or bounce; **always honor `prefers-reduced-motion`** with a static fallback. (This applies app-wide, not only on the walk-through page in §11.)
+
+## 5. Theme (light + dark)
 
 - Ship both, via a class-based theme provider (e.g. `next-themes`, `attribute="class"`), **defaulting to the system theme** (`defaultTheme="system"`).
 - A small toggle lives in the header.
 - High-contrast in both modes: light = near-black on white; dark = near-white on near-black.
 
-## 5. Brand: logo & tagline
+## 6. Brand: logo & tagline
 
 Every site has a **logo** and a **tagline**.
 
 - **Logo** is used everywhere it belongs: header, favicon (`icon.png`), apple touch icon, and the OG image. Keep a vector source in the repo. Size it up, but on mobile it must never crowd the nav (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
-- **Tagline**: one elegant line with **italic accent emphasis** on the key phrase. It anchors the hero and the **browser tab title**. In the social card it is the **OG/Twitter description**, with the **app name as the OG/Twitter title** (see §8).
+- **Tagline**: one elegant line with **italic accent emphasis** on the key phrase. It anchors the hero and the **browser tab title**. In the social card it is the **OG/Twitter description**, with the **app name as the OG/Twitter title** (see §12).
 
-## 6. Layout & navigation
+## 7. Layout & navigation
 
 - **Pagination** on any long list: ~**12 per page**, `Prev · 1 2 3 … · Next`. Reset to page 1 when filters change, smooth-scroll to the list top on page change, and show the visible range (e.g. "01–12 of 45").
 - **Header is NOT sticky**: it scrolls away with the page (don't freeze it at the top).
@@ -106,13 +116,36 @@ Every site has a **logo** and a **tagline**.
   - [ ] **Tap targets are comfortably large** (~44px) and not crowded together.
   - [ ] **The header logo never crowds the nav** (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
 
-## 7. Required pages
+## 8. Inputs, states, and graceful failure
+
+The unhappy paths are part of the design. An app that only handles valid input and instant success feels broken the moment reality deviates, so give every place a user can act a designed response.
+
+- **Validate untrusted input early and cheaply, before expensive work.** If the core action is slow or costs money (an LLM call, a paid API, a long pipeline), gate the input first so junk fails fast, not after a full run. Fold the check into a step you already run so it adds no latency.
+- **Guards are high-precision: reject only the clearly-invalid; when in doubt, accept.** A false rejection of real input is worse than occasionally allowing questionable input. Accept plausible edge cases (a brand that looks like a person's name is still a brand); reject only the obvious nonsense.
+- **Design every state, on-brand:**
+  - **Empty** (before first input): show what good input looks like, ideally one-tap **example inputs** the user can run.
+  - **Loading** (anything slow): show **progressive feedback** (a phase, or a streamed partial result), never a frozen UI with no signal.
+  - **Error / technical**: plain-language and recoverable (a retry or reset), never a raw stack trace or browser default.
+  - **Invalid / user-input**: a **distinct, friendly** state, separate from the technical-error path, that explains why the input wasn't usable and points back to valid input plus the examples. Keep the field editable so the user can fix and retry.
+- **Examples are part of the input.** A free-text field with a few example chips teaches valid input, powers the empty state, and gives the invalid state somewhere to point.
+- Verify every state in light, dark, and at 375 to 390px like any other screen (§7).
+
+## 9. When the app generates or ingests content (AI apps)
+
+When an app produces content with a model or ingests third-party content, correctness and trust become design requirements.
+
+- **Be honest about what's known.** Cite a source or omit the claim; label estimates as estimates; never fabricate figures or quotes. Where possible make every claim **verifiable**, linking the source the user can click through to.
+- **Defend against prompt injection.** Treat any third-party or user-supplied text fed to a model as untrusted: wrap it in clear delimiters and instruct the model to treat it as data to analyze, never as instructions to follow.
+- **Make output reproducible when it should be.** For a deterministic artifact, pin model settings (e.g. temperature 0 with a fixed seed) so the same input yields the same output; note that live external data is the remaining source of drift.
+- **Match the model to the job.** Default to the fastest model (the Stack default, §15); step up a tier only for a core artifact where output quality dominates latency, and record why.
+
+## 10. Required pages
 
 - A **privacy / disclaimer page**: "informational only, not legal/professional advice; verify before relying."
 - An **about / methodology page** explaining what the site is and how it works.
 - A **footer** with attribution **"Built by William Zhu"** linking `https://www.linkedin.com/in/william-wei-zhu/`, plus any license/legal links.
 
-## 8. The technical walk-through page (optional, hidden)
+## 11. The technical walk-through page (optional, hidden)
 
 A single **unlisted** page that explains, in plain language with visuals, **exactly what happens when a user performs the core action**. It exists for demos, interviews, portfolio reviewers, and curious stakeholders: people who need to understand the system without reading the code. Add it when explaining the app clearly is worth it (showing the work to a prospective employer, say); skip it for a purely utilitarian tool.
 
@@ -133,15 +166,15 @@ A single **unlisted** page that explains, in plain language with visuals, **exac
 
 **Visuals match the brand, with no new dependencies.**
 - **Hand-build** the diagrams and illustrations in **SVG / CSS** using the site's own tokens (fonts, accent, borders). Do **not** drop in stock photos or a charting / diagram library (Mermaid, D3); they fight the brand and add weight.
-- Motion is **refined and one-shot**: elements fade or draw themselves in **once** as they scroll into view. **No auto-looping.** Always honor `prefers-reduced-motion`.
-- Verify it in light, dark, and at 375 to 390px like any other page (§6).
+- Motion is **refined and one-shot**: elements fade or draw themselves in **once** as they scroll into view. **No auto-looping.** Always honor `prefers-reduced-motion` (§4).
+- Verify it in light, dark, and at 375 to 390px like any other page (§7).
 
 **Accuracy is the whole point.**
 - Document the **real** stack and the **real** parameters (model ids, the exact search product and options, thresholds, timeouts, rate limits). Wrong details lose the technical audience instantly.
 - **Never put a secret on the page.** Architecture only.
 - Treat it as living: when the pipeline changes, update the page.
 
-## 9. Social / OG preview link
+## 12. Social / OG preview link
 
 The card has two parts: the **image** and the **share text** under it. Keep the words out of the image and in the text.
 
@@ -162,22 +195,24 @@ The card has two parts: the **image** and the **share text** under it. Keep the 
 - Provide **both** `opengraph-image` and `twitter-image` (App Router file conventions) and use `summary_large_image` for Twitter/X.
 - Remember: platforms **cache** OG cards. Refresh via their debugger (e.g. LinkedIn Post Inspector) or a throwaway `?v=` query string.
 
-## 10. Writing & voice
+## 13. Writing & voice
 
 - **No em-dashes.** Use a comma, colon, period, semicolon, or "and / but / so" instead.
 - **No specific company names** in placeholders or examples; use generic phrasing.
 - Plain, confident copy for a non-technical reader.
 
-## 11. Process: design & security
+## 14. Process: design & security
 
 - Build distinctive UI with the **`frontend-design` skill** to avoid generic AI aesthetics.
 - Before shipping, run a **security check** (the `security-review` skill) over the diff:
   - secrets stay in **gitignored** env files, never committed;
   - auth / admin routes are gated;
   - public endpoints have **rate limiting + bot protection**;
-  - all user input is validated.
+  - all user input is validated (see §8 for the UX side of this).
+- **Cost & resilience for expensive backends.** If the core action fans out to paid calls: enforce a **per-IP rate limit** AND a **global budget kill switch** (cap spend per hour/day, fail safe when exceeded); **cache** expensive results so repeat inputs return instantly; and **degrade gracefully** when optional infrastructure is absent (the app still works, it just drops the optional feature).
+- **Destructive scripts are dry-run by default.** Any maintenance or cleanup script that deletes or overwrites data defaults to a preview and requires an explicit `--apply` (or equivalent) to act; on uncertainty it keeps data rather than removing it.
 
-## 12. Stack (defaults)
+## 15. Stack (defaults)
 
 | Concern | Default |
 |---|---|
@@ -192,7 +227,7 @@ The card has two parts: the **image** and the **share text** under it. Keep the 
 
 Workflow: **commit + push every change** (all files, not just task-related ones), and keep `CLAUDE.md` / docs in sync with code.
 
-## 13. Standard build checklist
+## 16. Standard build checklist
 
 Apply these up front, before being asked:
 
@@ -200,11 +235,16 @@ Apply these up front, before being asked:
 - [ ] Logo + tagline in place
 - [ ] Big fonts (~120% base), generous line-height
 - [ ] Solid high-contrast color, no gray text
-- [ ] No left-border accent-bars anywhere (no `border-l` accent stripes on cards/callouts/blockquotes)
+- [ ] No accent bars on any edge (no `border-l` / colored top stripes on cards/callouts/blockquotes); cards/callouts one consistent light style
+- [ ] Headlines lead with the conclusion; one focal point per view; fixed-format artifacts designed to the frame (content clamped/paginated to fit); motion one-shot + `prefers-reduced-motion` honored
 - [ ] Simplify / remove anything unnecessary
 - [ ] Pagination on long lists (~12/page)
 - [ ] Header not sticky
 - [ ] Logo sized up, no mobile overlap
+- [ ] Designed empty / loading / error / invalid states (on-brand, recoverable); example inputs provided; input validated early with a high-precision guard
+- [ ] (Generated-content apps) claims cited or omitted and verifiable; prompt-injection defense on third-party text; deterministic settings where reproducibility matters
+- [ ] (Expensive backends) per-IP rate limit + global budget kill switch; expensive results cached; graceful degradation when optional infra absent
+- [ ] Destructive maintenance scripts dry-run by default (explicit `--apply` to act)
 - [ ] OG image: logo only, sized really large to fill the frame (no text)
 - [ ] OG/Twitter title = app name, description = tagline; preview defined at the site root (both `opengraph-image` + `twitter-image`)
 - [ ] System-default light/dark toggle
@@ -212,14 +252,14 @@ Apply these up front, before being asked:
 - [ ] Privacy / disclaimer page
 - [ ] (If a demo / portfolio matters) Hidden technical walk-through page: unlisted + `noindex`, not linked anywhere, few words + on-brand SVG visuals, names the real stack, shows no secrets
 - [ ] "Built by William Zhu" footer + LinkedIn
-- [ ] **Mobile layout optimized + verified at 375 to 390px** (no overflow, headings scaled down, no `&nbsp;` clipping, flourishes gated to `sm+`, multi-column rows stacked); see section 6
+- [ ] **Mobile layout optimized + verified at 375 to 390px** (no overflow, headings scaled down, no `&nbsp;` clipping, flourishes gated to `sm+`, multi-column rows stacked); see section 7
 - [ ] Built UI with `frontend-design` skill
 - [ ] `security-review` run before shipping
 - [ ] No em-dashes, no company names
 - [ ] Stack: Vercel · Google Cloud · Gemini · GitHub · Exa · PostHog · Resend (email/auth, when needed)
 - [ ] Committed, pushed, deployed, docs updated
 
-## 14. How to work with William (note to the agent)
+## 17. How to work with William (note to the agent)
 
 - He iterates **visually** and asks **"what do you think?"**: give a real **recommendation with trade-offs**, not just a menu of options. Lead with the recommendation, then act.
 - He asks **"where is X / how do I access it?"**: answer with the **exact URL and any credentials**.

@@ -12,10 +12,14 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Brand-cloning override**: when an app is meant to look native to a target brand (e.g. built to feel like it's made by Exa), fidelity to that brand wins over the standard's own visual conventions; the rest of the standard still applies
 - **Simplicity first**: remove before you add
 - **Typography**: large and legible (~120% base), fonts as principles not fixed faces
-- **Color & contrast**: all black or all white, no gray text; never a left-border accent-bar
+- **Color & contrast**: all black or all white, no gray text; no accent bar on any edge (left or top); consistent thin-border cards and one light callout style
+- **Composition & hierarchy**: lead-with-the-conclusion headlines, one focal point per view, design to the frame for fixed-format artifacts, refined one-shot motion (reduced-motion honored)
 - **Theme**: light + dark, system default
 - **Brand**: logo and tagline, everywhere they belong
 - **Layout**: pagination, non-sticky header, mobile layout optimization (verified at 375 to 390px: responsive headings, no `&nbsp;` clipping, flourishes gated to `sm+`, rows stacked)
+- **Inputs & states**: validate early with a high-precision guard, plus designed empty / loading / error / invalid states with one-tap example inputs
+- **Generated-content apps**: honesty (cite or omit, label estimates, verifiable claims), prompt-injection defense, determinism, model-tier-to-the-job
+- **Cost & resilience**: per-IP rate limit + global budget kill switch, caching, graceful degradation; destructive scripts dry-run by default
 - **Required pages**: privacy/disclaimer, about, "Built by William Zhu" footer
 - **Technical walk-through (optional, hidden)**: an unlisted, `noindex` page that explains what happens behind the scenes, in plain language plus on-brand SVG visuals, naming the real stack and showing no secrets
 - **Social preview**: image is the logo only, sized really large (no text); title = app name, description = tagline; defined at the site root
