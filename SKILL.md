@@ -91,7 +91,7 @@ How content is arranged carries as much weight as how it is styled.
 ## 5. Theme (light + dark)
 
 - Ship both, via a class-based theme provider (e.g. `next-themes`, `attribute="class"`), **defaulting to the system theme** (`defaultTheme="system"`).
-- A small toggle lives in the header.
+- The theme control lives on the **Settings page** as a Light / Dark / System choice (§10), **not** a standalone header toggle. The header carries a Settings (gear) button instead.
 - High-contrast in both modes: light = near-black on white; dark = near-white on near-black.
 
 ## 6. Brand: logo & tagline
@@ -143,6 +143,7 @@ When an app produces content with a model or ingests third-party content, correc
 
 - A **privacy / disclaimer page**: "informational only, not legal/professional advice; verify before relying."
 - An **about / methodology page** explaining what the site is and how it works.
+- A **settings page** reached by a **Settings (gear) button in the shared header**, so every page exposes it. At minimum it carries: **theme** (Light / Dark / System; §5), **notification preferences** (e.g. email opt-in), and **account** (sign out / manage). Add more preference rows as the app grows. Keep theme here, not as a header toggle.
 - A **footer** with attribution **"Built by William Zhu"** linking `https://www.linkedin.com/in/william-wei-zhu/`, plus any license/legal links.
 
 ## 11. The technical walk-through page (optional, hidden)
@@ -247,7 +248,8 @@ Apply these up front, before being asked:
 - [ ] Destructive maintenance scripts dry-run by default (explicit `--apply` to act)
 - [ ] OG image: logo only, sized really large to fill the frame (no text)
 - [ ] OG/Twitter title = app name, description = tagline; preview defined at the site root (both `opengraph-image` + `twitter-image`)
-- [ ] System-default light/dark toggle
+- [ ] System-default light/dark theme (control lives on the Settings page, not a header toggle)
+- [ ] Settings page (theme Light/Dark/System + notification prefs + account), reached by a header Settings (gear) button on every page
 - [ ] Tagline set as tab title
 - [ ] Privacy / disclaimer page
 - [ ] (If a demo / portfolio matters) Hidden technical walk-through page: unlisted + `noindex`, not linked anywhere, few words + on-brand SVG visuals, names the real stack, shows no secrets
