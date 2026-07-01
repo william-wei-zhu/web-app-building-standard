@@ -85,6 +85,7 @@ How content is arranged carries as much weight as how it is styled.
 
 - **Lead with the conclusion.** A headline states the **takeaway**, not a category label ("Where to win", not "Market segments"). Make the most important thing on each view the conclusion the reader should leave with (bottom line up front).
 - **One focal point per view.** Establish a clear visual hierarchy: one dominant element, the rest clearly subordinate. One strong element beats several competing ones (echoes §1).
+- **Actionable things must LOOK actionable, at rest.** Every clickable control carries a real, visible affordance: a filled shape (primary), an outlined/bordered shape (secondary), or at minimum a clearly-colored link that is styled *before* interaction. **NEVER style a real action as plain body text that only reveals it's clickable on hover (e.g. a muted text run with `hover:underline`).** On touch there is no hover, so the affordance is invisible; even on desktop it reads as static copy and gets missed. If a user can click it, it must be obvious without hovering. Prefer an outline button for a secondary action over a text link; if a text link is genuinely right, give it the accent color and a persistent underline, never a bare gray text run.
 - **Design to the frame for fixed-format artifacts.** When a deliverable has a fixed format (a card, a slide, an OG image, a PDF or export), design to that frame and **curate content to fit it**: clamp, truncate, or paginate rather than letting content overflow or reflow unpredictably. Budget the space up front.
 - **Motion is refined and one-shot.** Elements fade or draw in **once** as they enter view; **never auto-loop** or bounce; **always honor `prefers-reduced-motion`** with a static fallback. (This applies app-wide, not only on the walk-through page in §11.)
 
@@ -238,6 +239,7 @@ Apply these up front, before being asked:
 - [ ] Solid high-contrast color, no gray text
 - [ ] No accent bars on any edge (no `border-l` / colored top stripes on cards/callouts/blockquotes); cards/callouts one consistent light style
 - [ ] Headlines lead with the conclusion; one focal point per view; fixed-format artifacts designed to the frame (content clamped/paginated to fit); motion one-shot + `prefers-reduced-motion` honored
+- [ ] Every clickable control looks clickable **at rest** (filled/outlined/clearly-styled); never a bare text-styled action that only underlines on hover
 - [ ] Simplify / remove anything unnecessary
 - [ ] Pagination on long lists (~12/page)
 - [ ] Header not sticky
