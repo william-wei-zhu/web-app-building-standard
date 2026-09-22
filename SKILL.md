@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large & high-contrast type, lead-with-the-conclusion hierarchy, logo + tagline branding, designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, minimal OG image, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
-version: 1.8.0
+version: 1.9.0
 license: MIT
 metadata:
   hermes:
@@ -67,6 +67,10 @@ Big and legible. Design as if for an older reader ("easy for my grandma to read"
   - a **highly readable body face** (editorial serif or a clean sans),
   - a **monospace** for data, labels, and small-caps eyebrows (uppercase, tracked ~0.16em).
 - No tiny text. If a label feels small, it's too small.
+- **Keep each heading and sentence visually uniform.** Use the same font family, color, font style, weight, size, letter spacing and text treatment throughout a continuous heading, tagline, sentence or paragraph. Never decorate selected words with italics, a second font, accent colors, gradients, highlights, or a different weight or size. For example, render all of "Make DC the City for Innovators" consistently; do not italicize or recolor "Innovators."
+- **Create hierarchy between complete text blocks, not within them.** A heading may use the display face and body copy the body face, consistently by role. Line breaks may organize a heading without changing its typography. Real inline links keep the surrounding typography and color, with a persistent underline for affordance. Keep status badges separate from heading/sentence text.
+- **Apply this everywhere:** public pages, event details, admin, settings, preferences, private pages, and loading/error/empty states, in both themes and at every viewport. This also holds when following another brand unless William explicitly requests mixed inline styling. Review nested `em`, `i`, `strong`, `b` and styled spans for accidental exceptions.
+- **2026-09-22 correction:** this replaces the former instruction to use italic accent emphasis in taglines. Do not reintroduce that pattern in future projects.
 
 ## 3. Color & contrast (accessibility)
 
@@ -74,7 +78,7 @@ High contrast, **"all black or all white"**, never faded gray text.
 
 - Use **solid foreground** on background. **No opacity grays** for text (avoid `text-foreground/70`, etc.).
 - Secondary/muted text uses a **near-ink (light theme) / near-paper (dark theme)** token, not a transparent foreground.
-- **One accent color**, used sparingly (links, key emphasis, a single rule). Headings use ink, not the accent.
+- **One accent color**, used sparingly for controls and standalone links. Never recolor a phrase within a heading or sentence. Headings use one ink color throughout.
 - **Never an accent bar on any edge.** Do not put a colored stripe on the **left or top** edge of cards, callouts, blockquotes, list items, or section headers (e.g. `border-l-4 border-accent`, or a `h-1.5` colored top bar). The "colored stripe down the side or across the top" treatment is a generic AI-template tell and is banned outright. To set content apart, use whitespace, a full hairline border, a subtle background, weight and size, or a small dot / numbered marker / ring instead.
 - **Cards and callouts share one consistent style.** Cards are a **thin full border on a subtle surface**, used consistently across the app. Callout boxes share **one light style** (a small uppercase tracked kicker over a semibold body), not a heavy dark filled box (dark fills feel unrefined and tend to clip at a frame edge).
 - Verify both themes read cleanly.
@@ -85,7 +89,7 @@ How content is arranged carries as much weight as how it is styled.
 
 - **Lead with the conclusion.** A headline states the **takeaway**, not a category label ("Where to win", not "Market segments"). Make the most important thing on each view the conclusion the reader should leave with (bottom line up front).
 - **One focal point per view.** Establish a clear visual hierarchy: one dominant element, the rest clearly subordinate. One strong element beats several competing ones (echoes §1).
-- **Actionable things must LOOK actionable, at rest.** Every clickable control carries a real, visible affordance: a filled shape (primary), an outlined/bordered shape (secondary), or at minimum a clearly-colored link that is styled *before* interaction. **NEVER style a real action as plain body text that only reveals it's clickable on hover (e.g. a muted text run with `hover:underline`).** On touch there is no hover, so the affordance is invisible; even on desktop it reads as static copy and gets missed. If a user can click it, it must be obvious without hovering. Prefer an outline button for a secondary action over a text link; if a text link is genuinely right, give it the accent color and a persistent underline, never a bare gray text run.
+- **Actionable things must LOOK actionable, at rest.** Every clickable control carries a real, visible affordance: a filled shape (primary), an outlined/bordered shape (secondary), or at minimum a persistently underlined link that is styled *before* interaction. **NEVER style a real action as plain body text that only reveals it's clickable on hover (e.g. a muted text run with `hover:underline`).** On touch there is no hover, so the affordance is invisible; even on desktop it reads as static copy and gets missed. If a user can click it, it must be obvious without hovering. Prefer an outline button for a secondary action over a text link; if a text link is genuinely right, give it a persistent underline. Inline links inherit the surrounding typography and color; standalone links may use the accent.
 - **Design to the frame for fixed-format artifacts.** When a deliverable has a fixed format (a card, a slide, an OG image, a PDF or export), design to that frame and **curate content to fit it**: clamp, truncate, or paginate rather than letting content overflow or reflow unpredictably. Budget the space up front.
 - **Motion is refined and one-shot.** Elements fade or draw in **once** as they enter view; **never auto-loop** or bounce; **always honor `prefers-reduced-motion`** with a static fallback. (This applies app-wide, not only on the walk-through page in §11.)
 
@@ -100,7 +104,7 @@ How content is arranged carries as much weight as how it is styled.
 Every site has a **logo** and a **tagline**.
 
 - **Logo** is used everywhere it belongs: header, favicon (`icon.png`), apple touch icon, and the OG image. Keep a vector source in the repo. Size it up, but on mobile it must never crowd the nav (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
-- **Tagline**: one elegant line with **italic accent emphasis** on the key phrase. It anchors the hero and the **browser tab title**. In the social card it is the **OG/Twitter description**, with the **app name as the OG/Twitter title** (see §12).
+- **Tagline**: one clear line with **uniform typography and color throughout**, without italic or accent-colored words. It anchors the hero and the **browser tab title**. In the social card it is the **OG/Twitter description**, with the **app name as the OG/Twitter title** (see §12).
 
 ## 7. Layout & navigation
 
@@ -312,6 +316,7 @@ Apply these up front, before being asked:
 - [ ] Core identity defined first: pain point, domain, name, logo, tagline, mission
 - [ ] Logo + tagline in place
 - [ ] Big fonts (~120% base), generous line-height
+- [ ] Uniform font, color, style, weight and size within every heading and sentence; no decorative inline italics, accent words, font switches or highlights anywhere
 - [ ] Solid high-contrast color, no gray text
 - [ ] No accent bars on any edge (no `border-l` / colored top stripes on cards/callouts/blockquotes); cards/callouts one consistent light style
 - [ ] Headlines lead with the conclusion; one focal point per view; fixed-format artifacts designed to the frame (content clamped/paginated to fit); motion one-shot + `prefers-reduced-motion` honored

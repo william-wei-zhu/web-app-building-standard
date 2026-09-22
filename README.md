@@ -11,7 +11,7 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Workflow**: start from the core (pain point, domain, name, logo, tagline, mission), then build outward
 - **Brand-cloning override**: when an app is meant to look native to a target brand (e.g. built to feel like it's made by Exa), fidelity to that brand wins over the standard's own visual conventions; the rest of the standard still applies
 - **Simplicity first**: remove before you add
-- **Typography**: large and legible (~120% base), fonts as principles not fixed faces
+- **Typography**: large and legible (~120% base), consistent by text role; uniform font, color, size, weight and style within every heading and sentence, with no decorative inline italics or accent words
 - **Color & contrast**: all black or all white, no gray text; no accent bar on any edge (left or top); consistent thin-border cards and one light callout style
 - **Composition & hierarchy**: lead-with-the-conclusion headlines, one focal point per view, design to the frame for fixed-format artifacts, refined one-shot motion (reduced-motion honored)
 - **Theme**: light + dark, system default
