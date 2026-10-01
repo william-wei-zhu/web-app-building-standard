@@ -16,7 +16,7 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Composition & hierarchy**: lead-with-the-conclusion headlines, one focal point per view, design to the frame for fixed-format artifacts, refined one-shot motion (reduced-motion honored)
 - **Theme**: light + dark, system default
 - **Brand**: logo and tagline, everywhere they belong
-- **Layout**: pagination, non-sticky header, mobile layout optimization (verified at 375 to 390px: responsive headings, no `&nbsp;` clipping, flourishes gated to `sm+`, rows stacked)
+- **Layout**: pagination, non-sticky header, mobile layout optimization (verified at 375 to 390px: responsive headings, no `&nbsp;` clipping, flourishes gated to `sm+`, rows stacked, no overlapping elements in any view or state, key content visible first)
 - **Inputs & states**: validate early with a high-precision guard, plus designed empty / loading / error / invalid states with one-tap example inputs
 - **Generated-content apps**: honesty (cite or omit, label estimates, verifiable claims), prompt-injection defense, determinism, model-tier-to-the-job
 - **Cost & resilience**: per-IP rate limit + global budget kill switch, caching, graceful degradation; destructive scripts dry-run by default

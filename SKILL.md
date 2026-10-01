@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large & high-contrast type, lead-with-the-conclusion hierarchy, logo + tagline branding, designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, minimal OG image, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
-version: 1.9.0
+version: 1.10.0
 license: MIT
 metadata:
   hermes:
@@ -120,6 +120,8 @@ Every site has a **logo** and a **tagline**.
   - [ ] **Trim oversized vertical padding** so the hero does not push the real content below the fold.
   - [ ] **Tap targets are comfortably large** (~44px) and not crowded together.
   - [ ] **The header logo never crowds the nav** (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
+  - [ ] **Nothing overlaps.** No element sits on top of another unless it is designed to: floating panels, bottom sheets, toasts, map/media controls, sticky bars, badges and the header must not cover each other or hide content. Check every view and state (open sheet, expanded panel, toast showing, keyboard open), since overlaps often appear only in one state.
+  - [ ] **The key content is visible without digging.** On a phone the conclusion (headline, primary action) shows first, not below secondary controls; for full-screen tools (maps, editors), the canvas keeps enough space to be usable while a panel is open, and panels can collapse.
 
 ## 8. Inputs, states, and graceful failure
 
@@ -346,7 +348,7 @@ Apply these up front, before being asked:
 - [ ] Privacy / disclaimer page
 - [ ] (If a demo / portfolio matters) Hidden technical walk-through page: unlisted + `noindex`, not linked anywhere, few words + on-brand SVG visuals, names the real stack, shows no secrets
 - [ ] "Built by William Zhu" footer + LinkedIn
-- [ ] **Mobile layout optimized + verified at 375 to 390px** (no overflow, headings scaled down, no `&nbsp;` clipping, flourishes gated to `sm+`, multi-column rows stacked); see section 7
+- [ ] **Mobile layout optimized + verified at 375 to 390px** (no overflow, headings scaled down, no `&nbsp;` clipping, flourishes gated to `sm+`, multi-column rows stacked, **no overlapping elements in any view or state**, key content visible first); see section 7
 - [ ] Built UI with `frontend-design` skill
 - [ ] `security-review` run before shipping
 - [ ] No em-dashes, no company names
