@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large & high-contrast type, lead-with-the-conclusion hierarchy, logo + tagline branding, designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, minimal OG image, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
-version: 1.10.0
+version: 1.11.0
 license: MIT
 metadata:
   hermes:
@@ -251,6 +251,10 @@ When an app has accounts, the identity layer carries the most subtle, most re-li
 - **Watch ESM/CJS interop in serverless.** An ESM-only transitive dependency can break `require()` on the host runtime (e.g. `ERR_REQUIRE_ESM` on Vercel). Sidestep it: sign/verify the JWT directly with a small CJS library and mark the offending package external, rather than pulling in the heavy SDK path that drags in the ESM dep.
 - **Decouple a stable app-level id from the auth uid.** Allocate a **collision-safe, human-readable id** (handle -> name slug -> raw uid, with a `-2/-3` suffix on collision; existing ids never change) so URLs read well, and keep an `authUids[]` bridge on the record (every auth uid ever seen for that person) so security rules can still match the real auth uid.
 - **Hand off a sensitive token via a short-lived, same-origin cookie, not the URL.** URLs get logged, shared, and cached; a 120-second same-origin cookie does not.
+- **Email sign-in (magic links / one-time codes) never ships on the auth provider's default sender.** Firebase / Identity Platform send from a shared `noreply@<project>.firebaseapp.com` that isn't your domain, has no reputation and no delivery logs: the send API returns 200, Cloud Logging shows success, and the mail silently never arrives (BikeSim, Oct 2026). Before launch, point the provider at **custom SMTP via Resend** (§21) from a **verified sending subdomain of your own domain** (SPF + DKIM + DMARC records added in the domain's DNS), and set a real sender name.
+- **"Sign-in works" means a real inbox received the link and the click signed you in.** Test the full loop on the production domain (send, receive, click, land signed in) and check the spam folder; a 2xx from the send endpoint proves nothing. Turn on the provider's request logging while testing.
+- **Stay on plain Firebase Auth unless you need Identity Platform.** Initialising Identity Platform (e.g. `identityPlatform:initializeAuth` from a script) changes the rules: Google sign-in then needs a hand-made OAuth client (Google Auth Platform branding + support email + authorized domains, **published to production**, a Web client with your origins and `/__/auth/handler` redirect URIs, then the client id/secret pasted into the Google provider) instead of the one-click console toggle. Don't upload a consent-screen logo unless you're ready for Google's brand verification.
+- **Serve the auth handler from your own domain** (proxy `/__/auth/*` to `<project>.firebaseapp.com`) and set `authDomain` to it in production, so the Google sign-in window shows your domain, not a firebaseapp.com address.
 
 ## 16. Transactional email & notifications
 
@@ -335,6 +339,7 @@ Apply these up front, before being asked:
 - [ ] (Backend) rate-limit buckets key on a trusted client IP (not leftmost XFF); three-tier limits (per-IP burst + durable per-user/hr + global daily budget); every public paid endpoint has a global daily cap
 - [ ] (Backend) server-side URL fetches SSRF-hardened (per-hop private-IP re-validation across IPv4+IPv6, body cap, non-http(s) schemes dropped)
 - [ ] (Access control) strict-allowlist gating (unknown = deny), same coercion on create AND edit, enforced symmetrically across every surface incl. OG; 404-not-403 for unseeable resources; admin + cron gates fail closed; default-deny data rules deployed via CI
+- [ ] (Email sign-in) custom SMTP via Resend from a verified subdomain (never the provider's default sender); full send-receive-click loop tested on the production domain with a real inbox
 - [ ] (Email) per-type opt-outs default-on; RFC 8058 one-click unsubscribe with an unforgeable HMAC token; kind-aware throttling + away-detection; every interpolated string escaped
 - [ ] (Data integrity) one canonical normalization form for each dedup key; idempotent writes; deletion cascade wipes PII + strips dangling refs + deletes the identity doc last
 - [ ] (Infra) cloud project id pinned in admin SDK + scripts; no manual double-deploy; crons documented as UTC/no-DST
