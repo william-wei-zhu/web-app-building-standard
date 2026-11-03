@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, logo + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
-version: 1.14.0
+version: 1.15.0
 license: MIT
 metadata:
   hermes:
@@ -336,7 +336,7 @@ The project's own docs are part of the deliverable: they're what keeps the next 
 | Email | **Resend** (transactional email + email auth / magic links, when a project needs them) |
 | Framework | **Next.js (App Router) + Tailwind v4 + shadcn/ui** |
 
-Workflow: **commit + push every change** (all files, not just task-related ones), and keep `CLAUDE.md` / docs in sync with code. **Large redesigns go on a branch first**: push it, share the Vercel preview URL, and merge to `main` (auto-deploys production) only after William approves.
+Workflow: **commit + push every change** (all files, not just task-related ones), and keep `CLAUDE.md` / docs in sync with code. **Ship to production by default**: merge finished work to `main` (auto-deploys production), verify it live, and report it shipped. Never ask William whether to merge or deploy. (2026-11-03: replaced "big redesigns wait for approval on a branch preview"; a preview branch is fine as a working step, not a gate.)
 
 ## 22. Standard build checklist
 
@@ -384,7 +384,7 @@ Apply these up front, before being asked:
 - [ ] `security-review` run before shipping
 - [ ] No em-dashes, no company names
 - [ ] Stack: Vercel · Google Cloud · Gemini · GitHub · Exa · PostHog · Resend (email/auth, when needed)
-- [ ] Committed, pushed, deployed, docs updated (big redesigns via a branch preview, merged on approval)
+- [ ] Committed, merged to main, deployed to production and verified live, docs updated (no merge/deploy approval step)
 
 ## 23. How to work with William (note to the agent)
 
