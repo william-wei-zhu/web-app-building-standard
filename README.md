@@ -11,12 +11,13 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Workflow**: start from the core (pain point, domain, name, logo, tagline, mission), then build outward
 - **Brand-cloning override**: when an app is meant to look native to a target brand (e.g. built to feel like it's made by Exa), fidelity to that brand wins over the standard's own visual conventions; the rest of the standard still applies
 - **Simplicity first**: remove before you add
-- **Typography**: large and legible (~120% base), consistent by text role; uniform font, color, size, weight and style within every heading and sentence, with no decorative inline italics or accent words
+- **Typography**: large, bold and legible (~120% base, body weight 600), set in the logo wordmark's family, consistent by text role; uniform font, color, size, weight and style within every heading and sentence, with no decorative inline italics or accent words
 - **Color & contrast**: all black or all white, no gray text; no accent bar on any edge (left or top); consistent thin-border cards and one light callout style
-- **Composition & hierarchy**: lead-with-the-conclusion headlines, one focal point per view, design to the frame for fixed-format artifacts, refined one-shot motion (reduced-motion honored)
-- **Theme**: light + dark, system default
+- **Composition & hierarchy**: lead-with-the-conclusion headlines, one focal point per view, design to the frame for fixed-format artifacts; motion that is quick, meaningful and never nags (no periodic auto-firing effects), visuals big and saturated, reduced-motion honored
+- **Showcase & community sites**: demonstrate, don't describe; one signature interactive moment; arguments shown as pictures; no decorative chrome; never any overlapping text; proof (people, photos, real events) over effects; subpages share the home page's look
+- **Theme**: light + dark, system default, a header light/dark toggle plus the full choice on Settings
 - **Brand**: logo and tagline, everywhere they belong
-- **Layout**: pagination, non-sticky header, mobile layout optimization (verified at 375 to 390px: responsive headings, no `&nbsp;` clipping, flourishes gated to `sm+`, rows stacked, no overlapping elements in any view or state, key content visible first)
+- **Layout**: pagination, non-sticky header, tight section spacing, no fixed-height centered heroes, mobile layout optimization (verified at 375 to 390px: responsive headings, no `&nbsp;` clipping, flourishes gated to `sm+`, rows stacked, no overlapping elements in any view or state, key content visible first)
 - **Inputs & states**: validate early with a high-precision guard, plus designed empty / loading / error / invalid states with one-tap example inputs
 - **Generated-content apps**: honesty (cite or omit, label estimates, verifiable claims), prompt-injection defense, determinism, model-tier-to-the-job
 - **Cost & resilience**: per-IP rate limit + global budget kill switch, caching, graceful degradation; destructive scripts dry-run by default
@@ -25,12 +26,12 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Transactional email & notifications**: per-type default-on opt-outs, RFC 8058 one-click unsubscribe, kind-aware throttling, action-framed emails, derived notification rollups (no inbox collection)
 - **Data integrity**: one canonical normalization form per dedup key, idempotent writes, a safe deletion cascade (identity-last, PII wiped, dangling refs stripped)
 - **Deploy & infra gotchas**: data rules deployed separately via CI, cloud-project-id pin, UTC/no-DST crons, no manual double-deploy
-- **Testing**: the security-critical pure units first, load-bearing logic extracted to pure functions, the built-in test runner in CI
+- **Testing**: the security-critical pure units first, load-bearing logic extracted to pure functions, the built-in test runner in CI; visuals verified in a real browser (smooth-scroll, zoom and min-window-width traps)
 - **Documentation discipline**: CLAUDE.md as a running changelog with dated corrections, a per-integration runbook template, named scaling cliffs
-- **Required pages**: privacy/disclaimer, about, "Built by William Zhu" footer
+- **Required pages**: privacy/disclaimer, about, settings, "Built by William Zhu" footer (community brands may opt out)
 - **Technical walk-through (optional, hidden)**: an unlisted, `noindex` page that explains what happens behind the scenes, in plain language plus on-brand SVG visuals, naming the real stack and showing no secrets
 - **Social preview**: image is the logo only, sized really large (no text); title = app name, description = tagline; defined at the site root
-- **Process**: `frontend-design` for UI, `security-review` before shipping
+- **Process**: `frontend-design` for UI, `security-review` before shipping, big redesigns on a branch preview merged on approval
 - **Stack**: Vercel · Google Cloud · Gemini · GitHub · Exa · PostHog · Resend · Next.js + Tailwind + shadcn/ui
 
 ## How to use it

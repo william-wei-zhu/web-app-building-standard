@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
-description: "William's standard for building web apps: simplicity-first, large & high-contrast type, lead-with-the-conclusion hierarchy, logo + tagline branding, designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, minimal OG image, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
-version: 1.12.0
+description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, logo + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, minimal OG image, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
+version: 1.13.0
 license: MIT
 metadata:
   hermes:
@@ -61,7 +61,9 @@ Default to **removing, not adding**. When unsure, ship the plainer version.
 Big and legible. Design as if for an older reader ("easy for my grandma to read").
 
 - **Global zoom ~120%** (e.g. `html { font-size: 120% }`) so all rem-based type and spacing scale up uniformly.
-- Bump the type scale: body ≈ **1.2rem**, with a generous body line-height (~**1.7**).
+- Bump the type scale: body ≈ **1.2 to 1.25rem**, with a generous body line-height (~**1.65 to 1.7**).
+- **Body text is bold by default: weight 600 (semibold), labels 700, headings 700.** Regular-weight body copy reads thin and faint on real screens. (2026-11-03: William asked to "bold all normal text" so "even my grandma can read" it.) Buttons are bold too.
+- **Derive the face from the logo.** If the logo has a wordmark, set the site in that wordmark's family (or its closest Google Font) so the type and the mark read as one brand. Characterful-for-its-own-sake display faces (wide novelty grotesks, quirky serifs) read as informal; William rejected both in favor of the wordmark's geometric sans (2026-11-03).
 - **Fonts are principles, not fixed faces.** Choose per project, but always include:
   - a **characterful display face** for headings (a serif with personality works well),
   - a **highly readable body face** (editorial serif or a clean sans),
@@ -91,12 +93,26 @@ How content is arranged carries as much weight as how it is styled.
 - **One focal point per view.** Establish a clear visual hierarchy: one dominant element, the rest clearly subordinate. One strong element beats several competing ones (echoes §1).
 - **Actionable things must LOOK actionable, at rest.** Every clickable control carries a real, visible affordance: a filled shape (primary), an outlined/bordered shape (secondary), or at minimum a persistently underlined link that is styled *before* interaction. **NEVER style a real action as plain body text that only reveals it's clickable on hover (e.g. a muted text run with `hover:underline`).** On touch there is no hover, so the affordance is invisible; even on desktop it reads as static copy and gets missed. If a user can click it, it must be obvious without hovering. Prefer an outline button for a secondary action over a text link; if a text link is genuinely right, give it a persistent underline. Inline links inherit the surrounding typography and color; standalone links may use the accent.
 - **Design to the frame for fixed-format artifacts.** When a deliverable has a fixed format (a card, a slide, an OG image, a PDF or export), design to that frame and **curate content to fit it**: clamp, truncate, or paginate rather than letting content overflow or reflow unpredictably. Budget the space up front.
-- **Motion is refined and one-shot.** Elements fade or draw in **once** as they enter view; **never auto-loop** or bounce; **always honor `prefers-reduced-motion`** with a static fallback. (This applies app-wide, not only on the walk-through page in §11.)
+- **Motion is refined, and it never nags.** Elements fade or draw in **once** as they enter view, and quickly (~0.4s), so content never sits faded or blank while the reader waits. A **subtle ambient** loop (a shimmer, a slow drifting glow, a signal pulse) is fine when a showcase calls for it, but **never a periodic, attention-grabbing event** (an auto-firing "splash" or shockwave every few seconds). Big effects fire only when the user acts (move, click, scroll). **Always honor `prefers-reduced-motion`** with a static fallback, and pause canvas loops offscreen and in hidden tabs. (Corrected 2026-11-03: was "never auto-loop"; William liked ambient motion but called a periodic auto-splash "very annoying".)
+- **Every animation must carry meaning.** If a viewer can't say in a few seconds what an animation shows, cut or replace it. Abstract diagrams that look clever but explain nothing (an orbit ring of dots, a generic node graph, a waveform "timeline") were rejected as "ugly and makes no sense" and "repetitive and confusing". Good ones map one idea to one picture: a logo assembling from particles, three streams merging into one point, a seating chart where neighbors alternate groups.
+- **Visuals are bold and legible too.** The grandma rule (§2) applies to animation: particles, dots, lines and nodes must be **big, opaque and saturated** (dots ~4-8px on desktop, never 1-2px dust; lines 2px+; nodes 20px+), in vivid versions of the brand colors. Thin, dim, pastel visuals are "hard to see on a normal screen". Keep text solid; the vivid palette is for visuals only.
+
+### Showcase, brand and community sites: demonstrate, don't describe
+
+When the site's job is to make people feel something about a brand (a community, an event series, a launch), a tidy template is a failure even if it's clean.
+
+- **Don't paste the source doc into a template.** "Hero + three cards + three cards + CTA" filled with the one-pager's sentences was rated "crap". Rewrite the content for the web and give the page a structure, not a list.
+- **One signature, interactive moment** above the fold that embodies the concept (e.g. the logo built from particles that react to the cursor). It is the thing people remember and show others.
+- **Turn arguments into pictures.** A "why now" list becomes facts plus a visual that makes the conclusion obvious.
+- **Cut chrome that isn't content.** Decorative status readouts, coordinate strings, "move to observe" hints, kinetic word tickers and repeated section labels were all called "annoying and completely unnecessary". If it isn't information or an action, remove it.
+- **No text on top of text, ever.** Don't draw labels inside canvases where they can collide with page text; don't crossfade stacked text blocks (only one is visible at a time, out-before-in); don't show the same label three times (canvas + progress bar + kicker). Prefer normal document flow over pinned scroll scenes for anything with words.
+- **Proof beats animation for trust.** Real people (organizers, advisors), photos of real gatherings and real dated events persuade a senior audience more than any effect. Add them as soon as they exist.
+- **Subpages share the home page's visual language.** About / Privacy / Settings get the same header treatment (glow, mark) and content in cards, never bare prose that looks unstyled.
 
 ## 5. Theme (light + dark)
 
-- Ship both, via a class-based theme provider (e.g. `next-themes`, `attribute="class"`), **defaulting to the system theme** (`defaultTheme="system"`).
-- The theme control lives on the **Settings page** as a Light / Dark / System choice (§10), **not** a standalone header toggle. The header carries a Settings (gear) button instead.
+- Ship both as a class on `<html>`, **defaulting to the system theme**, and make the light theme bright and great-looking since many visitors land on it. (2026-11-03: briefly switched a project to light-by-default, then William set it back to system; system stays the default.) On Next.js 16+, prefer a tiny inline `<head>` script that applies the saved theme before first paint (per the "preventing flash before hydration" guide) over a theme library.
+- Put a **light/dark toggle (moon/sun icon button) in the header** so it's one tap from every page. The Settings page keeps the full Light / Dark / System choice. (Corrected 2026-11-03: was "Settings only, no header toggle"; William asked for a header dark-mode toggle.)
 - High-contrast in both modes: light = near-black on white; dark = near-white on near-black.
 
 ## 6. Brand: logo & tagline
@@ -109,7 +125,9 @@ Every site has a **logo** and a **tagline**.
 ## 7. Layout & navigation
 
 - **Pagination** on any long list: ~**12 per page**, `Prev · 1 2 3 … · Next`. Reset to page 1 when filters change, smooth-scroll to the list top on page change, and show the visible range (e.g. "01–12 of 45").
-- **Header is NOT sticky**: it scrolls away with the page (don't freeze it at the top).
+- **Header is NOT sticky**: it scrolls away with the page (don't freeze it at the top). If it floats over a full-bleed hero, pad the hero content so nothing can ever slide under it.
+- **Tight vertical rhythm.** Sections use modest padding (about `py-14 sm:py-20` at the 120% root), not `py-24 sm:py-32`. Big empty bands between sections read as "so much blank white space".
+- **Never vertically center content in a fixed-height hero.** `h-[100svh]` + `justify-center` pushes text up under the header on short windows. Let the section grow with its content (`min-h`), and below the desktop breakpoint give a hero visual its own band instead of overlaying the text.
 - **Mobile layout optimization is non-negotiable.** A desktop layout shrunk down is not a mobile layout. Take a real screenshot at ~**375 to 390px** and fix it before shipping. Check each item:
   - [ ] **No horizontal overflow or scrollbar.** Nothing clips at the right edge.
   - [ ] **Scale display headings down on mobile** (responsive type, e.g. `text-4xl sm:text-7xl`). Hero headings sized for desktop overflow on phones.
@@ -120,6 +138,7 @@ Every site has a **logo** and a **tagline**.
   - [ ] **Trim oversized vertical padding** so the hero does not push the real content below the fold.
   - [ ] **Tap targets are comfortably large** (~44px) and not crowded together.
   - [ ] **The header logo never crowds the nav** (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
+  - [ ] **Check short viewports too** (e.g. a 1440x600 laptop window), not only narrow ones: overlaps often appear only when the height is small.
   - [ ] **Nothing overlaps.** No element sits on top of another unless it is designed to: floating panels, bottom sheets, toasts, map/media controls, sticky bars, badges and the header must not cover each other or hide content. Check every view and state (open sheet, expanded panel, toast showing, keyboard open), since overlaps often appear only in one state.
   - [ ] **The key content is visible without digging.** On a phone the conclusion (headline, primary action) shows first, not below secondary controls; for full-screen tools (maps, editors), the canvas keeps enough space to be usable while a panel is open, and panels can collapse.
 
@@ -134,6 +153,7 @@ The unhappy paths are part of the design. An app that only handles valid input a
   - **Loading** (anything slow): show **progressive feedback** (a phase, or a streamed partial result), never a frozen UI with no signal.
   - **Error / technical**: plain-language and recoverable (a retry or reset), never a raw stack trace or browser default.
   - **Invalid / user-input**: a **distinct, friendly** state, separate from the technical-error path, that explains why the input wasn't usable and points back to valid input plus the examples. Keep the field editable so the user can fix and retry.
+- **Placeholder data is labeled and self-replacing.** When real content doesn't exist yet (an empty events calendar), placeholders may stand in only when William asks, each marked plainly (e.g. a "Tentative" badge, "Date TBA"), with no invented speakers or companies. Wire the live source so real items replace the placeholders automatically, and fall back to the placeholders silently if the source fails.
 - **Examples are part of the input.** A free-text field with a few example chips teaches valid input, powers the empty state, and gives the invalid state somewhere to point.
 - **A third-party read or enrichment step must never dead-end a flow.** When an outside fetch fails (it often will), degrade to a manual path that **preserves what the user already entered** and lets them continue, never bounce them back to the start with a "try again" error. The failure is usually not the user's fault, so don't make them feel it. (Reference: onboarding where an external LinkedIn read fails advances to manual review with the typed URL kept, instead of a "try another URL" dead end.)
 - **Defer gated actions cleanly for guests.** When a signed-out user clicks a sign-in-gated action, stash the intent and **re-run it automatically after sign-in** so the click isn't lost. Reflect the resulting state on the control (e.g. "Connected", not a stale "Sign in").
@@ -155,8 +175,8 @@ When an app produces content with a model or ingests third-party content, correc
 
 - A **privacy / disclaimer page**: "informational only, not legal/professional advice; verify before relying."
 - An **about / methodology page** explaining what the site is and how it works.
-- A **settings page** reached by a **Settings (gear) button in the shared header**, so every page exposes it. At minimum it carries: **theme** (Light / Dark / System; §5), **notification preferences** (e.g. email opt-in), and **account** (sign out / manage). Add more preference rows as the app grows. Keep theme here, not as a header toggle.
-- A **footer** with attribution **"Built by William Zhu"** linking `https://www.linkedin.com/in/william-wei-zhu/`, plus any license/legal links.
+- A **settings page**, reachable from every page (a header gear button, or a footer link when the header already carries the theme toggle). At minimum it carries: **theme** (Light / Dark / System; §5), and, when the app has them, **notification preferences** (e.g. email opt-in) and **account** (sign out / manage). Add more preference rows as the app grows.
+- A **footer** with attribution **"Built by William Zhu"** linking `https://www.linkedin.com/in/william-wei-zhu/`, plus any license/legal links. Exception: a site for a community or organization brand may drop the personal credit when William says so; record it in the project's `CLAUDE.md`.
 
 ## 11. The technical walk-through page (optional, hidden)
 
@@ -290,6 +310,7 @@ You don't need broad coverage to be safe; you need the **security-load-bearing**
 
 - **Test the security-critical PURE units first:** client-IP spoof resistance, the visibility allowlist, symmetric block/mute, the SSRF address filter, `javascript:`/`data:` scheme neutralization, and the HMAC unsubscribe-token round-trip + forgery rejection. These are where a regression is a breach, not a bug.
 - **Extract the load-bearing logic into pure functions** so it's testable without a database emulator. Flows that genuinely need the DB (deletion cascades, reopen logic) can be deferred and noted, not faked.
+- **Verify visuals in a real browser, and know the tools' traps.** Smooth-scroll libraries (Lenis) own the scroll position, so a programmatic `window.scrollTo` gets pulled back: scroll with real wheel events. Headless/MCP browsers can run at a non-1 zoom and mis-capture `position: sticky` scenes, so confirm pinned layouts in real Chrome. Desktop Chrome windows can't shrink to phone width (~500-600px minimum), so use device emulation for 375-390px. Screenshot every section after each visual change, not just the hero.
 - **Prefer the runtime's built-in test runner, zero extra deps** (e.g. `node --test`), and gate merges on it in CI alongside typecheck + lint + build.
 
 ## 20. Documentation discipline
@@ -313,7 +334,7 @@ The project's own docs are part of the deliverable: they're what keeps the next 
 | Email | **Resend** (transactional email + email auth / magic links, when a project needs them) |
 | Framework | **Next.js (App Router) + Tailwind v4 + shadcn/ui** |
 
-Workflow: **commit + push every change** (all files, not just task-related ones), and keep `CLAUDE.md` / docs in sync with code.
+Workflow: **commit + push every change** (all files, not just task-related ones), and keep `CLAUDE.md` / docs in sync with code. **Large redesigns go on a branch first**: push it, share the Vercel preview URL, and merge to `main` (auto-deploys production) only after William approves.
 
 ## 22. Standard build checklist
 
@@ -321,11 +342,14 @@ Apply these up front, before being asked:
 
 - [ ] Core identity defined first: pain point, domain, name, logo, tagline, mission
 - [ ] Logo + tagline in place
-- [ ] Big fonts (~120% base), generous line-height
+- [ ] Big fonts (~120% base), generous line-height, **bold body text (600)**; site typeface derived from the logo wordmark
 - [ ] Uniform font, color, style, weight and size within every heading and sentence; no decorative inline italics, accent words, font switches or highlights anywhere
 - [ ] Solid high-contrast color, no gray text
 - [ ] No accent bars on any edge (no `border-l` / colored top stripes on cards/callouts/blockquotes); cards/callouts one consistent light style
-- [ ] Headlines lead with the conclusion; one focal point per view; fixed-format artifacts designed to the frame (content clamped/paginated to fit); motion one-shot + `prefers-reduced-motion` honored
+- [ ] Headlines lead with the conclusion; one focal point per view; fixed-format artifacts designed to the frame (content clamped/paginated to fit); reveals quick and one-shot, ambient motion subtle, **no periodic auto-firing effects**, `prefers-reduced-motion` honored
+- [ ] Every animation carries one clear meaning; visuals bold, big and saturated (no thin or dim dust)
+- [ ] (Showcase sites) a signature interactive moment; arguments shown as pictures; no decorative chrome (readouts, tickers, repeated labels); proof (people, photos, real events) planned
+- [ ] **No text overlaps anywhere**: none drawn inside canvases, no stacked crossfades, checked at short viewport heights; tight section spacing
 - [ ] Every clickable control looks clickable **at rest** (filled/outlined/clearly-styled); never a bare text-styled action that only underlines on hover
 - [ ] Simplify / remove anything unnecessary
 - [ ] Pagination on long lists (~12/page)
@@ -347,8 +371,8 @@ Apply these up front, before being asked:
 - [ ] (Docs) CLAUDE.md carries inline rationale + dated corrections; each integration has a runbook doc; scaling cliffs named
 - [ ] OG image: logo only, sized really large to fill the frame (no text)
 - [ ] OG/Twitter title = app name, description = tagline; preview defined at the site root (both `opengraph-image` + `twitter-image`)
-- [ ] System-default light/dark theme (control lives on the Settings page, not a header toggle)
-- [ ] Settings page (theme Light/Dark/System + notification prefs + account), reached by a header Settings (gear) button on every page
+- [ ] System-default theme with a header light/dark toggle; full Light/Dark/System choice on Settings
+- [ ] Settings page reachable from every page; subpages share the home page's visual language (no bare prose)
 - [ ] Tagline set as tab title
 - [ ] Privacy / disclaimer page
 - [ ] (If a demo / portfolio matters) Hidden technical walk-through page: unlisted + `noindex`, not linked anywhere, few words + on-brand SVG visuals, names the real stack, shows no secrets
@@ -358,11 +382,13 @@ Apply these up front, before being asked:
 - [ ] `security-review` run before shipping
 - [ ] No em-dashes, no company names
 - [ ] Stack: Vercel · Google Cloud · Gemini · GitHub · Exa · PostHog · Resend (email/auth, when needed)
-- [ ] Committed, pushed, deployed, docs updated
+- [ ] Committed, pushed, deployed, docs updated (big redesigns via a branch preview, merged on approval)
 
 ## 23. How to work with William (note to the agent)
 
 - He iterates **visually** and asks **"what do you think?"**: give a real **recommendation with trade-offs**, not just a menu of options. Lead with the recommendation, then act.
 - He asks **"where is X / how do I access it?"**: answer with the **exact URL and any credentials**.
 - He **favors deleting over adding**. When in doubt, cut.
+- He asks **"how would you rate this 1 to 10?"**: give an honest number per dimension (visual design, UI, UX), the specific reasons, and the concrete steps that would reach 9-10. Don't inflate.
+- He sends **rapid feedback while you work**. Address every message, in order, and say which item each change answers. When he says a section is ugly or confusing, replace the concept, don't polish it.
 - **Third-party dashboards (Resend, PostHog, and similar) sign in with Google as wzhu1997@gmail.com.** When a browser session has expired, use the site's "Continue with Google" button in his Chrome and pick that account; never type a password. Do the setup yourself (domains, keys, projects) rather than handing him console steps.
