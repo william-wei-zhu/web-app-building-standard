@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
-description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, logo + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, minimal OG image, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
-version: 1.13.0
+description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, logo + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
+version: 1.14.0
 license: MIT
 metadata:
   hermes:
@@ -31,7 +31,7 @@ Every project starts from a **pain point**. Before building any UI, nail the cor
 5. **Tagline.**
 6. **Mission statement.**
 
-Only once these are settled do you build out the rest (pages, features, data), all derived from them. The **tagline** drives the hero, tab title, and OG image; the **logo** drives the header, favicon, and OG; the **mission** drives the about page and the site's voice. If a later decision feels arbitrary, return to the core and derive it.
+Only once these are settled do you build out the rest (pages, features, data), all derived from them. The **tagline** drives the hero, tab title, and share description; the **logo** drives the header, favicon, and OG; the **mission** drives the about page and the site's voice. If a later decision feels arbitrary, return to the core and derive it.
 
 ---
 
@@ -120,7 +120,7 @@ When the site's job is to make people feel something about a brand (a community,
 Every site has a **logo** and a **tagline**.
 
 - **Logo** is used everywhere it belongs: header, favicon (`icon.png`), apple touch icon, and the OG image. Keep a vector source in the repo. Size it up, but on mobile it must never crowd the nav (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
-- **Tagline**: one clear line with **uniform typography and color throughout**, without italic or accent-colored words. It anchors the hero and the **browser tab title**. In the social card it is the **OG/Twitter description**, with the **app name as the OG/Twitter title** (see §12).
+- **Tagline**: one clear line with **uniform typography and color throughout**, without italic or accent-colored words. It anchors the hero and the **browser tab title**. In the social card it leads the **OG/Twitter description** (followed by a one-line subtitle), with the **app name as the OG/Twitter title** (see §12).
 
 ## 7. Layout & navigation
 
@@ -211,21 +211,23 @@ A single **unlisted** page that explains, in plain language with visuals, **exac
 
 The card has two parts: the **image** and the **share text** under it. Keep the words out of the image and in the text.
 
-**The image:**
-- **Logo only, no text at all.** No app name, tagline, counts, eyebrows, or decorative pills baked into the image.
-- **Make the logo really large**, sized to fill the frame height with only a small margin. A bold, oversized mark reads best as a thumbnail in a feed.
-- Use a **high-resolution logo source** (e.g. 1024px square) so it stays crisp when scaled up.
-- Standard **1200×630**, generated at build (e.g. `next/og`), on the brand background.
+**The image: the full logo, nothing else.**
+- **Use the logo exactly as designed.** If the logo is a lockup (mark + wordmark), the image is the **full lockup**, so the name reads in the thumbnail; if the logo is a mark alone, use the mark. (2026-11-03: William asked for the full logo rather than the bare mark.) The wordmark is part of the logo, not added text.
+- **No other text.** No tagline, subtitle, counts, eyebrows, or decorative pills baked into the image; those go in the share text.
+- **Make the logo really large**: a wide lockup spans nearly the full width (~1060 of 1200px); a square mark fills the frame height. Only a small margin either way.
+- Use a **high-resolution logo source** so it stays crisp when scaled up.
+- Standard **1200×630** on a **white** (or brand) background, as a **static PNG** rendered from the high-res logo. A static file is the most reliable card for LinkedIn, iMessage, Slack and X; use `next/og` only when the image must be dynamic.
 
 **The share text (this is where the words go):**
-- **OG / Twitter title = the app name** (e.g. "SkatePuck").
-- **OG / Twitter description = the tagline** (e.g. "Skate to where your market is going.").
+- **OG / Twitter title = the app name** (e.g. "Disruptive Quantum").
+- **OG / Twitter description = the tagline + a one-line subtitle** that says what it is (e.g. "Advancing America's quantum leadership. United States Quantum Technology Alliance."). Keep it short (~120 characters) so feeds don't truncate it. Store it once (e.g. `site.shareDescription`) and use it for the meta description too. (2026-11-03: was the tagline alone.)
 - The platform renders the title bold with the description beneath, so the words never belong inside the image.
 
 **Implementation:**
 - Define the preview at the **site root**, not only on dynamic subpages. If only subpages have an OG image, sharing the homepage renders no preview at all (a common bug).
 - Set a **`metadataBase`** so image URLs resolve to absolute `https://` URLs.
-- Provide **both** `opengraph-image` and `twitter-image` (App Router file conventions) and use `summary_large_image` for Twitter/X.
+- Provide **both** `opengraph-image` and `twitter-image` (App Router file conventions: static `app/opengraph-image.png` + `app/twitter-image.png`, each with an `.alt.txt` such as "<Name> logo") and use `summary_large_image` for Twitter/X.
+- **Verify on the live domain after deploy**: curl the homepage for `og:title`, `og:description` and `og:image`, then fetch the image URL and confirm a 200 `image/png`.
 - Remember: platforms **cache** OG cards. Refresh via their debugger (e.g. LinkedIn Post Inspector) or a throwaway `?v=` query string.
 
 ## 13. Writing & voice
@@ -369,8 +371,8 @@ Apply these up front, before being asked:
 - [ ] (Infra) cloud project id pinned in admin SDK + scripts; no manual double-deploy; crons documented as UTC/no-DST
 - [ ] (Testing) security-critical pure units covered (IP spoofing, visibility allowlist, symmetric block, SSRF filter, scheme neutralization, HMAC token); gated in CI with the built-in test runner
 - [ ] (Docs) CLAUDE.md carries inline rationale + dated corrections; each integration has a runbook doc; scaling cliffs named
-- [ ] OG image: logo only, sized really large to fill the frame (no text)
-- [ ] OG/Twitter title = app name, description = tagline; preview defined at the site root (both `opengraph-image` + `twitter-image`)
+- [ ] OG image: the full logo (lockup if it has a wordmark), really large, on white, static 1200x630 PNG; no other text
+- [ ] OG/Twitter title = app name, description = tagline + one-line subtitle; preview defined at the site root (both `opengraph-image` + `twitter-image`); verified live
 - [ ] System-default theme with a header light/dark toggle; full Light/Dark/System choice on Settings
 - [ ] Settings page reachable from every page; subpages share the home page's visual language (no bare prose)
 - [ ] Tagline set as tab title

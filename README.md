@@ -30,7 +30,7 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Documentation discipline**: CLAUDE.md as a running changelog with dated corrections, a per-integration runbook template, named scaling cliffs
 - **Required pages**: privacy/disclaimer, about, settings, "Built by William Zhu" footer (community brands may opt out)
 - **Technical walk-through (optional, hidden)**: an unlisted, `noindex` page that explains what happens behind the scenes, in plain language plus on-brand SVG visuals, naming the real stack and showing no secrets
-- **Social preview**: image is the logo only, sized really large (no text); title = app name, description = tagline; defined at the site root
+- **Social preview**: image is the full logo (lockup when it has a wordmark), really large on white, as a static 1200x630 PNG with no other text; title = app name, description = tagline + a one-line subtitle; defined at the site root and verified live
 - **Process**: `frontend-design` for UI, `security-review` before shipping, big redesigns on a branch preview merged on approval
 - **Stack**: Vercel · Google Cloud · Gemini · GitHub · Exa · PostHog · Resend · Next.js + Tailwind + shadcn/ui
 
