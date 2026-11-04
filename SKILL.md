@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, logo + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
-version: 1.15.0
+version: 1.16.0
 license: MIT
 metadata:
   hermes:
@@ -109,6 +109,25 @@ When the site's job is to make people feel something about a brand (a community,
 - **Proof beats animation for trust.** Real people (organizers, advisors), photos of real gatherings and real dated events persuade a senior audience more than any effect. Add them as soon as they exist.
 - **Subpages share the home page's visual language.** About / Privacy / Settings get the same header treatment (glow, mark) and content in cards, never bare prose that looks unstyled.
 
+### Clarity: the 5-second test (2026-11-03)
+
+A visitor landing cold must be able to answer, without scrolling past the second section: **What is this? Who is it for? What's next? Who runs it? What do I do?** William called a page that failed this "a bunch of mumbo jumbo", even though every section looked good on its own.
+
+- **The H1 says what it is, in plain words.** "Where quantum founders, investors, industry, and government meet." beats a mission line ("Advancing America's quantum leadership"), which belongs in the tab title, share card and About. A name like "Alliance" can read as a lobby; the headline has to fix that.
+- **The hero is a label + the H1 + two buttons.** No supporting paragraph unless it adds a fact the H1 can't; William cut it as "completely unnecessary".
+- **Order sections the way a visitor asks questions:** what it is (hero) → what's next (upcoming events) → who you'll meet → who runs it → the one place to act. Never ask someone to join before they know what they're joining.
+- **A community or event site always has an "Upcoming events" section on the home page**, even when the calendar is empty (an honest empty state, never fake events).
+- **Say each fact once.** If an audience list, a cadence or a CTA appears in two sections, cut one. Repeated lists, three identical "Join" buttons and stacked metaphors ("one table", "in the room", "trusted room") read as filler.
+- **One primary CTA, one secondary.** E.g. "Join free" + "Follow on Luma". Don't repeat the full call to action at the bottom if the join form is already the last section.
+- **Visual over text.** Each item in a group is a tile: a big glowing icon + a short name + a line of 3 to 6 words. Never a grid of sentence-length cards; William: "too much text, not enough icons and images".
+- **Cut redundant explainer sections.** A "How it works" 1-2-3 strip that restates the hero and the form was called "redundant". Only keep a section if removing it would lose information.
+
+### People and bios
+
+- **Who runs it shows on the home page near the CTA**: photo, name, title and a LinkedIn button per organizer (lead person highlighted). Full bios live on About.
+- **One paragraph per person, current roles inside it.** Never role bullets plus a bio that repeats them ("why are the descriptions so repetitive?"). Link named things inline (a club, a book) with a persistent underline; no extra buttons for them.
+- **Get current roles from the source, and confirm numbers with William.** Read a person's LinkedIn Experience (in William's Chrome if the public scrape hides it) for current titles. Don't copy stats from another site without checking: williamzhu.ai said "100+" club members when the real number was 2,000+.
+
 ## 5. Theme (light + dark)
 
 - Ship both as a class on `<html>`, **defaulting to the system theme**, and make the light theme bright and great-looking since many visitors land on it. (2026-11-03: briefly switched a project to light-by-default, then William set it back to system; system stays the default.) On Next.js 16+, prefer a tiny inline `<head>` script that applies the saved theme before first paint (per the "preventing flash before hydration" guide) over a theme library.
@@ -139,6 +158,7 @@ Every site has a **logo** and a **tagline**.
   - [ ] **Tap targets are comfortably large** (~44px) and not crowded together.
   - [ ] **The header logo never crowds the nav** (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
   - [ ] **Check short viewports too** (e.g. a 1440x600 laptop window), not only narrow ones: overlaps often appear only when the height is small.
+  - [ ] **Dense diagrams get a phone version.** If an SVG diagram's labels would fall below ~12px at 390px (a 15-seat round table), hide it below `sm` and let its legend become the visual (e.g. seat-colored circles carrying the labels). Small icon + label chips stack (icon above name) so words never clip.
   - [ ] **Nothing overlaps.** No element sits on top of another unless it is designed to: floating panels, bottom sheets, toasts, map/media controls, sticky bars, badges and the header must not cover each other or hide content. Check every view and state (open sheet, expanded panel, toast showing, keyboard open), since overlaps often appear only in one state.
   - [ ] **The key content is visible without digging.** On a phone the conclusion (headline, primary action) shows first, not below secondary controls; for full-screen tools (maps, editors), the canvas keeps enough space to be usable while a panel is open, and panels can collapse.
 
@@ -153,7 +173,8 @@ The unhappy paths are part of the design. An app that only handles valid input a
   - **Loading** (anything slow): show **progressive feedback** (a phase, or a streamed partial result), never a frozen UI with no signal.
   - **Error / technical**: plain-language and recoverable (a retry or reset), never a raw stack trace or browser default.
   - **Invalid / user-input**: a **distinct, friendly** state, separate from the technical-error path, that explains why the input wasn't usable and points back to valid input plus the examples. Keep the field editable so the user can fix and retry.
-- **Placeholder data is labeled and self-replacing.** When real content doesn't exist yet (an empty events calendar), placeholders may stand in only when William asks, each marked plainly (e.g. a "Tentative" badge, "Date TBA"), with no invented speakers or companies. Wire the live source so real items replace the placeholders automatically, and fall back to the placeholders silently if the source fails.
+- **No fake content, even labeled.** When real content doesn't exist yet (an empty events calendar), show an honest empty state ("No events on the calendar yet. The first gathering will be announced here.") and wire the live source so real items appear automatically. (Corrected 2026-11-03: tentative placeholder events were tried and rejected as "fake, and we don't like it".)
+- **Member / sign-up forms**: first name, last name and email required; company, role (job title), phone and LinkedIn optional (LinkedIn accepted only as a canonical linkedin.com profile URL). After success, an optional short survey (which group describes you, interests, how you'd take part), never repeating a field the form already asked. Promise the time honestly ("takes 10 seconds"), and offer the lighter path right under the form (e.g. "Prefer Luma? Follow our calendar there."). On phones the form comes right after its heading, before secondary content.
 - **Examples are part of the input.** A free-text field with a few example chips teaches valid input, powers the empty state, and gives the invalid state somewhere to point.
 - **A third-party read or enrichment step must never dead-end a flow.** When an outside fetch fails (it often will), degrade to a manual path that **preserves what the user already entered** and lets them continue, never bounce them back to the start with a "try again" error. The failure is usually not the user's fault, so don't make them feel it. (Reference: onboarding where an external LinkedIn read fails advances to manual review with the typed URL kept, instead of a "try another URL" dead end.)
 - **Defer gated actions cleanly for guests.** When a signed-out user clicks a sign-in-gated action, stash the intent and **re-run it automatically after sign-in** so the click isn't lost. Reflect the resulting state on the control (e.g. "Connected", not a stale "Sign in").
@@ -312,7 +333,7 @@ You don't need broad coverage to be safe; you need the **security-load-bearing**
 
 - **Test the security-critical PURE units first:** client-IP spoof resistance, the visibility allowlist, symmetric block/mute, the SSRF address filter, `javascript:`/`data:` scheme neutralization, and the HMAC unsubscribe-token round-trip + forgery rejection. These are where a regression is a breach, not a bug.
 - **Extract the load-bearing logic into pure functions** so it's testable without a database emulator. Flows that genuinely need the DB (deletion cascades, reopen logic) can be deferred and noted, not faked.
-- **Verify visuals in a real browser, and know the tools' traps.** Smooth-scroll libraries (Lenis) own the scroll position, so a programmatic `window.scrollTo` gets pulled back: scroll with real wheel events. Headless/MCP browsers can run at a non-1 zoom and mis-capture `position: sticky` scenes, so confirm pinned layouts in real Chrome. Desktop Chrome windows can't shrink to phone width (~500-600px minimum), so use device emulation for 375-390px. Screenshot every section after each visual change, not just the hero.
+- **Verify visuals in a real browser, and know the tools' traps.** Smooth-scroll libraries (Lenis) own the scroll position, so a programmatic `window.scrollTo` gets pulled back: scroll with real wheel events. Headless/MCP browsers can run at a non-1 zoom and mis-capture `position: sticky` scenes, so confirm pinned layouts in real Chrome. Desktop Chrome windows can't shrink to phone width (~500-600px minimum), so use device emulation for 375-390px: a small headless-Chromium script (Playwright's cached `headless_shell`) that takes full-page 390px screenshots in light and dark and audits horizontal overflow and overlapping text boxes is the reliable phone check. Screenshot every section after each visual change, not just the hero.
 - **Prefer the runtime's built-in test runner, zero extra deps** (e.g. `node --test`), and gate merges on it in CI alongside typecheck + lint + build.
 
 ## 20. Documentation discipline
@@ -350,6 +371,8 @@ Apply these up front, before being asked:
 - [ ] No accent bars on any edge (no `border-l` / colored top stripes on cards/callouts/blockquotes); cards/callouts one consistent light style
 - [ ] Headlines lead with the conclusion; one focal point per view; fixed-format artifacts designed to the frame (content clamped/paginated to fit); reveals quick and one-shot, ambient motion subtle, **no periodic auto-firing effects**, `prefers-reduced-motion` honored
 - [ ] Every animation carries one clear meaning; visuals bold, big and saturated (no thin or dim dust)
+- [ ] Passes the 5-second test: H1 says what it is; sections ordered what → what's next → who → who runs it → act; each fact said once; one primary + one secondary CTA; items are icon tiles, not sentence cards
+- [ ] (Community sites) home has an Upcoming events section (honest empty state, never fake events) and the organizers (photo, title, LinkedIn) near the join form
 - [ ] (Showcase sites) a signature interactive moment; arguments shown as pictures; no decorative chrome (readouts, tickers, repeated labels); proof (people, photos, real events) planned
 - [ ] **No text overlaps anywhere**: none drawn inside canvases, no stacked crossfades, checked at short viewport heights; tight section spacing
 - [ ] Every clickable control looks clickable **at rest** (filled/outlined/clearly-styled); never a bare text-styled action that only underlines on hover
@@ -392,5 +415,6 @@ Apply these up front, before being asked:
 - He asks **"where is X / how do I access it?"**: answer with the **exact URL and any credentials**.
 - He **favors deleting over adding**. When in doubt, cut.
 - He asks **"how would you rate this 1 to 10?"**: give an honest number per dimension (visual design, UI, UX), the specific reasons, and the concrete steps that would reach 9-10. Don't inflate.
+- **Facts about William and his projects**: confirm with him rather than copying from his own sites, which can lag (club size, titles).
 - He sends **rapid feedback while you work**. Address every message, in order, and say which item each change answers. When he says a section is ugly or confusing, replace the concept, don't polish it.
 - **Third-party dashboards (Resend, PostHog, and similar) sign in with Google as wzhu1997@gmail.com.** When a browser session has expired, use the site's "Continue with Google" button in his Chrome and pick that account; never type a password. Do the setup yourself (domains, keys, projects) rather than handing him console steps.

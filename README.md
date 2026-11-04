@@ -14,6 +14,8 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Typography**: large, bold and legible (~120% base, body weight 600), set in the logo wordmark's family, consistent by text role; uniform font, color, size, weight and style within every heading and sentence, with no decorative inline italics or accent words
 - **Color & contrast**: all black or all white, no gray text; no accent bar on any edge (left or top); consistent thin-border cards and one light callout style
 - **Composition & hierarchy**: lead-with-the-conclusion headlines, one focal point per view, design to the frame for fixed-format artifacts; motion that is quick, meaningful and never nags (no periodic auto-firing effects), visuals big and saturated, reduced-motion honored
+- **Clarity (5-second test)**: the H1 says what it is; sections ordered what → what's next → who → who runs it → act; each fact said once; one primary + one secondary CTA; icon tiles, not sentence cards; community sites always show Upcoming events (honest empty state) and the organizers near the join form
+- **Forms**: name + email required; company, role, phone, LinkedIn optional; optional follow-up survey; a lighter "follow" path under the form; no fake placeholder content
 - **Showcase & community sites**: demonstrate, don't describe; one signature interactive moment; arguments shown as pictures; no decorative chrome; never any overlapping text; proof (people, photos, real events) over effects; subpages share the home page's look
 - **Theme**: light + dark, system default, a header light/dark toggle plus the full choice on Settings
 - **Brand**: logo and tagline, everywhere they belong
