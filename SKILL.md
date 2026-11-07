@@ -1,6 +1,6 @@
 ---
 name: web-app-building-standard
-description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, logo + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
+description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
 version: 1.16.0
 license: MIT
 metadata:
@@ -139,6 +139,10 @@ A visitor landing cold must be able to answer, without scrolling past the second
 Every site has a **logo** and a **tagline**.
 
 - **Logo** is used everywhere it belongs: header, favicon (`icon.png`), apple touch icon, and the OG image. Keep a vector source in the repo. Size it up, but on mobile it must never crowd the nav (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
+- **Default logo = a cute animal mascot** (William, 2026-11-07). Unless the project is a brand mimic (§0) or William names another direction, every new project's logo is a cute plush-style animal character with a fitting prop or outfit, like SavorLM's Savvy (a chibi plush raccoon in a beret and chef jacket holding a guidebook, in a gold-ringed medallion: [savorlm.com](https://savorlm.com)). Pick an animal and outfit that fit the product's job; it doubles as the app's guide/character when the app has one.
+  - **Generate it with the Higgsfield image generator** (Higgsfield MCP `generate_image`) on **the newest OpenAI GPT Image model it offers**. Check with `models_explore` (`action: "list", type: "image"`) and pick the highest-numbered `gpt_image_*` id: as of 2026-11-07 that is `gpt_image_2_6` (Sunburst; `gpt_image_2_6_flare` is the alternate variant). Use `quality: "high"` and `background: "transparent"` for the mark, 1:1.
+  - Generate a few candidates, let William pick, then keep the chosen image as the **reference** for every later pose, favicon and OG export so the character stays consistent. Commit the reference and the export script; raw candidates stay gitignored.
+  - It must read at favicon size: one clear silhouette, big head, simple face, high contrast against the medallion/background, no text in the art.
 - **Tagline**: one clear line with **uniform typography and color throughout**, without italic or accent-colored words. It anchors the hero and the **browser tab title**. In the social card it leads the **OG/Twitter description** (followed by a one-line subtitle), with the **app name as the OG/Twitter title** (see §12).
 
 ## 7. Layout & navigation
@@ -157,6 +161,8 @@ Every site has a **logo** and a **tagline**.
   - [ ] **Trim oversized vertical padding** so the hero does not push the real content below the fold.
   - [ ] **Tap targets are comfortably large** (~44px) and not crowded together.
   - [ ] **The header logo never crowds the nav** (hide a redundant text wordmark below the `sm` breakpoint when the logo already contains the name).
+  - [ ] **Subpage headers are one tidy row on phones** (William, 2026-11-07, SavorLM About/Privacy): mark + wordmark + a back button only. **No tagline in subpage headers** (it wraps into 2 to 3 lines and squeezes the row). The logo link is `shrink-0` and never `min-w-0` (a shrunk flex box lets the wordmark spill onto the button while the DOM rects still look fine; measure the text with a Range, not the box). The back button is `shrink-0 whitespace-nowrap` with a short label below `sm` (chevron + "Back", full "Back to <App>" from `sm`), and the row fits at 320px (step the wordmark/mark down below 360px if needed). Subpage `h1` scales down on phones (e.g. `text-[1.8rem] sm:text-[2.2rem]`), and phone gutters are 16px (`px-4 sm:px-5`).
+  - [ ] **Test phone widths in an emulated context**, not by resizing the visible browser window: a headed window often refuses to go below ~400px, so its screenshots lie. Use a fresh Playwright context with `viewport` + `isMobile` at 320, 360 and 390.
   - [ ] **Check short viewports too** (e.g. a 1440x600 laptop window), not only narrow ones: overlaps often appear only when the height is small.
   - [ ] **Dense diagrams get a phone version.** If an SVG diagram's labels would fall below ~12px at 390px (a 15-seat round table), hide it below `sm` and let its legend become the visual (e.g. seat-colored circles carrying the labels). Small icon + label chips stack (icon above name) so words never clip.
   - [ ] **Nothing overlaps.** No element sits on top of another unless it is designed to: floating panels, bottom sheets, toasts, map/media controls, sticky bars, badges and the header must not cover each other or hide content. Check every view and state (open sheet, expanded panel, toast showing, keyboard open), since overlaps often appear only in one state.
@@ -354,6 +360,7 @@ The project's own docs are part of the deliverable: they're what keeps the next 
 | Version control | **GitHub** (public repos by default unless data-sensitive) |
 | Research / search | **Exa** |
 | Product analytics | **PostHog** (wire on launch) |
+| Logo / mascot art | **Higgsfield** on the newest OpenAI GPT Image model (`gpt_image_2_6` as of 2026-11-07; see §6) |
 | Email | **Resend** (transactional email + email auth / magic links, when a project needs them) |
 | Framework | **Next.js (App Router) + Tailwind v4 + shadcn/ui** |
 
@@ -364,7 +371,7 @@ Workflow: **commit + push every change** (all files, not just task-related ones)
 Apply these up front, before being asked:
 
 - [ ] Core identity defined first: pain point, domain, name, logo, tagline, mission
-- [ ] Logo + tagline in place
+- [ ] Logo (cute animal mascot via Higgsfield, newest GPT Image model, by default) + tagline in place
 - [ ] Big fonts (~120% base), generous line-height, **bold body text (600)**; site typeface derived from the logo wordmark
 - [ ] Uniform font, color, style, weight and size within every heading and sentence; no decorative inline italics, accent words, font switches or highlights anywhere
 - [ ] Solid high-contrast color, no gray text
