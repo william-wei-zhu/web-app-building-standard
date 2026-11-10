@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
-description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
-version: 1.16.0
+description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, TypeSafe Jev, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
+version: 1.17.0
 license: MIT
 metadata:
   hermes:
@@ -198,6 +198,14 @@ When an app produces content with a model or ingests third-party content, correc
 - **Cheap math before the expensive model.** When ranking or selecting, do the local work first (cosine similarity, dedup, dropping already-consumed candidates) and spend the LLM or paid call **only on the survivors**. Order any per-item pipeline cheap-to-costly so a rejection never pays for the expensive step. (See also the budget kill switch in §14.)
 - **Fall back, and guard the shape.** Prefer an explicit provider API key, fall back to the cloud provider (e.g. ADC) when it's unset, so the app runs in both environments. Guard vector/embedding calls with a **count-mismatch check that throws** rather than silently returning misaligned results.
 - **Match the model to the job.** Default to the fastest model (the Stack default, §21); step up a tier only for a core artifact where output quality dominates latency, and record why.
+- **Decisions go to a decision model, words go to the LLM.** When code needs a judgment it will branch on (classify, score against a rubric, "is this claim supported?", route, guardrail), ask **TypeSafe Jev** instead of prompting Gemini for JSON. Jev is a System One model: it generates no text, so there is nothing to parse and nothing to hallucinate. (Added 2026-11-10; in use on SavorLM and AI Discussion Club.)
+  - **One call = a `state` + typed `questions`**: `POST https://api.typesafe.ai/v1/systemone` with `Authorization: Bearer $TYPESAFE_API_KEY`, server-side only. `state` is the text, object or images to judge; each question has `instructions` and `criteria`. Question types: **Choice** (pick from a list; returns `choice`, `probabilities`, `confidence`), **Score** (place on a rubric), **Noul** (is this statement true, 0 to 1), **Box** (where in an image; needs Jev 1.14).
+  - **Ask many narrow questions in one request.** They are evaluated in parallel and in isolation, so adding questions barely adds latency (most calls take about 100 ms) and one answer never colors another. Break a broad judgment into atomic questions and combine the answers in code.
+  - **The threshold lives in code, and "unknown" is a real answer.** Act only above a set probability and show nothing below it (SavorLM shows a fit badge only for yes at 0.6 or higher). Offer an explicit unknown option so thin evidence does not get forced into yes or no.
+  - **Pin the model by explicit id** (`jev-1.14.0` as of 2026-11-10), never `jev-latest`: an alias moving would change labels under you. Check [docs.typesafe.ai/models](https://docs.typesafe.ai/models) for the newest id when starting a project.
+  - **Cost and guards**: $0.042 per million input tokens, output free, so it is the cheap step to run before a costly one. Still cache answers (SavorLM: 7 days), retry a 429 with backoff, set a request timeout, and degrade gracefully (drop the badge, keep the result) when the key is unset or the call fails.
+  - **It is not a chat or writing model.** Planning, narration, extraction into prose and anything a person reads stay on Gemini. Jev is a sanctioned non-Google provider, like Resend; note it in the project's `CLAUDE.md`.
+  - **Setup**: get a key from the TypeSafe console, and install its agent skill before writing the integration (`npx skills add typesafe-ai/skills --skill typesafe-ai`). Docs: [docs.typesafe.ai](https://docs.typesafe.ai).
 
 ## 10. Required pages
 
@@ -358,6 +366,7 @@ The project's own docs are part of the deliverable: they're what keeps the next 
 | Host + deploy | **Vercel** (deploy via CLI) |
 | Data | **Google Cloud** (Firestore) |
 | AI | **Gemini via Vertex AI**, the fastest model (currently 3.1 Flash Lite) |
+| Typed decisions / checks | **TypeSafe Jev** (classify, score, yes/no checks and routing with calibrated probabilities, when a project needs them; pinned by explicit id, `jev-1.14.0` as of 2026-11-10; see §9) |
 | Version control | **GitHub** (public repos by default unless data-sensitive) |
 | Research / search | **Exa** |
 | Product analytics | **PostHog** (wire on launch) |
@@ -389,7 +398,7 @@ Apply these up front, before being asked:
 - [ ] Header not sticky
 - [ ] Logo sized up, no mobile overlap
 - [ ] Designed empty / loading / error / invalid states (on-brand, recoverable); example inputs provided; input validated early with a high-precision guard
-- [ ] (Generated-content apps) claims cited or omitted and verifiable; prompt-injection defense on third-party text; deterministic settings where reproducibility matters
+- [ ] (Generated-content apps) claims cited or omitted and verifiable; prompt-injection defense on third-party text; deterministic settings where reproducibility matters; judgments the code branches on asked of TypeSafe Jev (pinned id, threshold in code), not parsed from LLM text
 - [ ] (Expensive backends) per-IP rate limit + global budget kill switch; expensive results cached; graceful degradation when optional infra absent
 - [ ] Destructive maintenance scripts dry-run by default (explicit `--apply` to act)
 - [ ] (Accounts) identity/login email vs user-editable contact email kept separate; `email_verified` required on token verify; stable human-readable id decoupled from the auth uid
@@ -414,7 +423,7 @@ Apply these up front, before being asked:
 - [ ] Built UI with `frontend-design` skill
 - [ ] `security-review` run before shipping
 - [ ] No em-dashes, no company names
-- [ ] Stack: Vercel · Google Cloud · Gemini · GitHub · Exa · PostHog · Resend (email/auth, when needed)
+- [ ] Stack: Vercel · Google Cloud · Gemini · TypeSafe Jev (typed decisions, when needed) · GitHub · Exa · PostHog · Resend (email/auth, when needed)
 - [ ] Committed, merged to main, deployed to production and verified live, docs updated (no merge/deploy approval step)
 
 ## 23. How to work with William (note to the agent)

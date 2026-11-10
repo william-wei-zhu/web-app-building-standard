@@ -21,7 +21,7 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Brand**: logo and tagline, everywhere they belong
 - **Layout**: pagination, non-sticky header, tight section spacing, no fixed-height centered heroes, mobile layout optimization (verified at 375 to 390px: responsive headings, no `&nbsp;` clipping, flourishes gated to `sm+`, rows stacked, no overlapping elements in any view or state, key content visible first)
 - **Inputs & states**: validate early with a high-precision guard, plus designed empty / loading / error / invalid states with one-tap example inputs
-- **Generated-content apps**: honesty (cite or omit, label estimates, verifiable claims), prompt-injection defense, determinism, model-tier-to-the-job
+- **Generated-content apps**: honesty (cite or omit, label estimates, verifiable claims), prompt-injection defense, determinism, model-tier-to-the-job, typed decisions from TypeSafe Jev (calibrated probabilities, threshold in code) instead of parsed LLM text
 - **Cost & resilience**: per-IP rate limit + global budget kill switch, caching, graceful degradation; destructive scripts dry-run by default
 - **Security & access control**: trusted-IP rate-limit buckets, three-tier limiting, SSRF-hardened URL fetches, strict-allowlist gating with create/edit parity and symmetric enforcement, 404-not-403, fail-closed admin/cron gates, default-deny data rules
 - **Auth & identity**: identity vs contact email, `email_verified`, OAuth-code-flow fallback to a custom token, ESM/CJS serverless traps, a stable human-readable id decoupled from the auth uid
@@ -34,7 +34,7 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Technical walk-through (optional, hidden)**: an unlisted, `noindex` page that explains what happens behind the scenes, in plain language plus on-brand SVG visuals, naming the real stack and showing no secrets
 - **Social preview**: image is the full logo (lockup when it has a wordmark), really large on white, as a static 1200x630 PNG with no other text; title = app name, description = tagline + a one-line subtitle; defined at the site root and verified live
 - **Process**: `frontend-design` for UI, `security-review` before shipping, ship to production by default (merge to main, verify live, never ask)
-- **Stack**: Vercel · Google Cloud · Gemini · GitHub · Exa · PostHog · Resend · Next.js + Tailwind + shadcn/ui
+- **Stack**: Vercel · Google Cloud · Gemini · TypeSafe Jev · GitHub · Exa · PostHog · Resend · Next.js + Tailwind + shadcn/ui
 
 ## How to use it
 
