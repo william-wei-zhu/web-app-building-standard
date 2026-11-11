@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, TypeSafe Jev, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
-version: 1.18.0
+version: 1.19.0
 license: MIT
 metadata:
   hermes:
@@ -452,6 +452,7 @@ Learned building Startup School (startupschool.app, 2026-11), a walkable 3D game
 **Design rules that moved the score**
 - **Open in the world.** No landing page in front of the game. The title, mascot and one pulsing start button sit over the live scene, server-rendered so they paint before the 3D loads. A returning player sees "Continue".
 - **Exactly one thing is bright.** Compute the next step in one pure function and make everything read it: a guide character that flies to the target, a trail on the floor from the player's feet, a ring on the target, a chip at the top, an arrow at the screen edge when the target is off screen, and the button that closes each stage. Optional things are small, pale, labelled "Optional", and hidden for the first few minutes.
+- **Never make walking the price of playing.** Steering with keys or a joystick is friction for most people. Put a Go button on the next-step chip that walks the player there and opens it, make everything in the world tappable (tap a character, a crate, a door and the player walks over and uses it), and give each walking game a chip per target. Use one auto-walk for all of it: steer the same controller the keys steer, sidestep when stuck, hop the rest of the way after a few seconds, then fire the same action as the key press. Any key or joystick input cancels it. If a game needs many tap targets, give it a fixed camera that shows all of them.
 - **A different mechanic per stage.** If every stage is "pick one of three", it is a quiz in a 3D room. Give each stage its own small game (walk and kick, drag a slider while a character reacts, a timed run, a card hand, sorting), each ending in a 0 to 1 score through one tested function, with the plain choice kept as a quiet fallback.
 - **Every action answers back**: characters cheer or slump, numbers count up and flash, stars land one by one, confetti on a win, a sound for win, lose and step. Synthesize small sounds in code; generate music.
 - **The world shows the state.** Numbers in a bar are not enough: put users on a wall, leave objects behind after each stage, change the room when the company changes.
