@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, TypeSafe Jev, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
-version: 1.17.0
+version: 1.18.0
 license: MIT
 metadata:
   hermes:
@@ -373,6 +373,7 @@ The project's own docs are part of the deliverable: they're what keeps the next 
 | Logo / mascot art | **Higgsfield** on the newest OpenAI GPT Image model (`gpt_image_2_6` as of 2026-11-07; see §6) |
 | Email | **Resend** (transactional email + email auth / magic links, when a project needs them) |
 | Framework | **Next.js (App Router) + Tailwind v4 + shadcn/ui** |
+| 3D (when the product is a game or a world) | **React Three Fiber + drei + Rapier**, versions pinned exactly; characters, music and props generated on **Higgsfield** (see §24) |
 
 Workflow: **commit + push every change** (all files, not just task-related ones), and keep `CLAUDE.md` / docs in sync with code. **Ship to production by default**: merge finished work to `main` (auto-deploys production), verify it live, and report it shipped. Never ask William whether to merge or deploy. (2026-11-03: replaced "big redesigns wait for approval on a branch preview"; a preview branch is fine as a working step, not a gate.)
 
@@ -424,6 +425,7 @@ Apply these up front, before being asked:
 - [ ] `security-review` run before shipping
 - [ ] No em-dashes, no company names
 - [ ] Stack: Vercel · Google Cloud · Gemini · TypeSafe Jev (typed decisions, when needed) · GitHub · Exa · PostHog · Resend (email/auth, when needed)
+- [ ] If it is a 3D game or world: §24 applied (opens in the world, one obvious next step, a different mechanic per stage, every action answers back, honest 1 to 10 score before and after)
 - [ ] Committed, merged to main, deployed to production and verified live, docs updated (no merge/deploy approval step)
 
 ## 23. How to work with William (note to the agent)
@@ -435,3 +437,39 @@ Apply these up front, before being asked:
 - **Facts about William and his projects**: confirm with him rather than copying from his own sites, which can lag (club size, titles).
 - He sends **rapid feedback while you work**. Address every message, in order, and say which item each change answers. When he says a section is ugly or confusing, replace the concept, don't polish it.
 - **Third-party dashboards (Resend, PostHog, and similar) sign in with Google as wzhu1997@gmail.com.** When a browser session has expired, use the site's "Continue with Google" button in his Chrome and pick that account; never type a password. Do the setup yourself (domains, keys, projects) rather than handing him console steps.
+
+## 24. 3D games and walkable worlds (when a project is one)
+
+Learned building Startup School (startupschool.app, 2026-11), a walkable 3D game. Everything above still applies to the pages around the game.
+
+**Stack and setup**
+- **React Three Fiber + drei + Rapier** on the WebGL renderer, with a third-person controller (`ecctrl`). **Pin every version exactly**: the 3D packages have tight peer ranges and a caret breaks the build months later. Load the game with `dynamic(..., { ssr: false })`; it never renders on the server.
+- **Build rooms in code from primitives in one flat palette**, not from a mixed asset catalog. It matches generated low-poly characters, costs nothing, and you own the colliders. Use a **dollhouse shell**: inward-facing single-sided walls, no ceiling, open toward the camera, and the same footprint for every room so camera rules carry over.
+- **Generate the cast, not the rooms.** Concept image in a strict A-pose from one style reference, then image-to-3D with rigging. All characters from one pipeline share a skeleton, so buy each animation once and reuse it as an animation-only file. Check the preview of a clip before paying for it. Report the credit cost before each batch.
+- **State**: one small store for the world (mode, place, who you are talking to) and one persisted store for the run. Per-frame values (player position) live outside React state. Never return a new object from a store selector that a render reads: it loops.
+- Content is data (lessons, characters, spots); scoring is pure functions with unit tests; a model only writes words, a decision model or code decides outcomes.
+
+**Design rules that moved the score**
+- **Open in the world.** No landing page in front of the game. The title, mascot and one pulsing start button sit over the live scene, server-rendered so they paint before the 3D loads. A returning player sees "Continue".
+- **Exactly one thing is bright.** Compute the next step in one pure function and make everything read it: a guide character that flies to the target, a trail on the floor from the player's feet, a ring on the target, a chip at the top, an arrow at the screen edge when the target is off screen, and the button that closes each stage. Optional things are small, pale, labelled "Optional", and hidden for the first few minutes.
+- **A different mechanic per stage.** If every stage is "pick one of three", it is a quiz in a 3D room. Give each stage its own small game (walk and kick, drag a slider while a character reacts, a timed run, a card hand, sorting), each ending in a 0 to 1 score through one tested function, with the plain choice kept as a quiet fallback.
+- **Every action answers back**: characters cheer or slump, numbers count up and flash, stars land one by one, confetti on a win, a sound for win, lose and step. Synthesize small sounds in code; generate music.
+- **The world shows the state.** Numbers in a bar are not enough: put users on a wall, leave objects behind after each stage, change the room when the company changes.
+- **Do not spoil the outcome** before the payoff plays. Let the player take an answer back.
+- **An arc and an ending**: a fixed number of stages, a finale, a grade, something to copy and share, and a game-over that offers to take back the last move.
+- **Music needs variety and a mute.** Twenty short tracks shuffled per session, quiet, ducked under speech, with on/off and next. One loop drives people away.
+
+**Honest scoring**
+- Before and after each round, score it 1 to 10 **as a player** on ease, fun, rewarding and wow, with the specific reasons. Startup School went 4.5 (a quiz in a 3D room, no guidance) to about 8.5 by applying the rules above in that order. A 10 needs things an agent cannot judge alone (sound, feel on a real phone, fun on the third play), so say that and ask the owner to play it.
+
+**Testing a 3D app with a headless browser**
+- Test against a production build (`next build && next start`), not the dev server: browser tooling that writes logs into the repo makes the dev server reload forever.
+- Drive it by holding keys until a button with the expected text appears, click buttons through the DOM, and seed the saved run in `localStorage` to jump to any stage. Screenshot and look at every new scene: logic can pass while a prop hides the thing the player must read.
+- Say plainly what was not tested: real microphone, real phone, sound, and the outcomes you did not play.
+
+**Gotchas**
+- A camera that keeps its angle after a cutscene changes what the movement keys mean; put it back behind the player.
+- Anything placed outside the open side of a dollhouse room is below the camera's view. Put it on a wall instead.
+- Two things at the same spot (two doors on one mat) fight for the prompt; show only the one the story needs.
+- Audio starts only after a tap or key press; start music on the same press that starts the game.
+
