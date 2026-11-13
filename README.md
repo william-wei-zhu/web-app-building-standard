@@ -34,7 +34,7 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Technical walk-through (optional, hidden)**: an unlisted, `noindex` page that explains what happens behind the scenes, in plain language plus on-brand SVG visuals, naming the real stack and showing no secrets
 - **Social preview**: image is the full logo (lockup when it has a wordmark), really large on white, as a static 1200x630 PNG with no other text; title = app name, description = tagline + a one-line subtitle; defined at the site root and verified live
 - **Process**: `frontend-design` for UI, `security-review` before shipping, ship to production by default (merge to main, verify live, never ask)
-- **3D games and worlds** (when a project is one): open in the world, one obvious next step, a different mechanic per stage, every action answers back, honest 1 to 10 scoring; React Three Fiber + Rapier, rooms in code, cast generated on Higgsfield
+- **3D games and worlds** (when a project is one): open in the world, one obvious next step, a different mechanic per stage, every action answers back, honest 1 to 10 scoring; React Three Fiber + Rapier, rooms in code, cast generated on Higgsfield; World Labs Atlas for generated splat worlds and fly-through videos (desktop showpieces and backdrops, not phone-played rooms)
 - **Stack**: Vercel · Google Cloud · Gemini · TypeSafe Jev · GitHub · Exa · PostHog · Resend · Next.js + Tailwind + shadcn/ui
 
 ## How to use it

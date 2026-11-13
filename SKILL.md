@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, TypeSafe Jev, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
-version: 1.20.0
+version: 1.21.0
 license: MIT
 metadata:
   hermes:
@@ -374,6 +374,7 @@ The project's own docs are part of the deliverable: they're what keeps the next 
 | Email | **Resend** (transactional email + email auth / magic links, when a project needs them) |
 | Framework | **Next.js (App Router) + Tailwind v4 + shadcn/ui** |
 | 3D (when the product is a game or a world) | **React Three Fiber + drei + Rapier**, versions pinned exactly; characters, music and props generated on **Higgsfield** (see §24) |
+| Generated 3D worlds (optional, when a project wants a photoreal or painted place) | **World Labs Atlas** (CLI `worldlabs`): images or a 3D layout in, a Gaussian splat world or a camera-move video out, shown in the browser with **Spark** (`@sparkjsdev/spark`). Desktop showpieces, videos and backdrops only, never the rooms of a phone-played game (see §24) |
 
 Workflow: **commit + push every change** (all files, not just task-related ones), and keep `CLAUDE.md` / docs in sync with code. **Ship to production by default**: merge finished work to `main` (auto-deploys production), verify it live, and report it shipped. Never ask William whether to merge or deploy. (2026-11-03: replaced "big redesigns wait for approval on a branch preview"; a preview branch is fine as a working step, not a gate.)
 
@@ -462,6 +463,19 @@ Learned building Startup School (startupschool.app, 2026-11), a walkable 3D game
 - **Do not spoil the outcome** before the payoff plays. Let the player take an answer back.
 - **An arc and an ending**: a fixed number of stages, a finale, a grade, something to copy and share, and a game-over that offers to take back the last move.
 - **Music needs variety and a mute.** Twenty short tracks shuffled per session, quiet, ducked under speech, with on/off and next. One loop drives people away.
+
+**Generated worlds: World Labs Atlas (optional)**
+
+Tried on Startup School (2026-11-12): two code-built rooms were repainted as splat worlds. It worked and looked rich, and William removed it the same day because it made every scene clunkier on his phone. Keep it in the toolbox for the right job.
+
+- **What it is.** Atlas turns images or a plain 3D layout into a consistent 3D scene. Outputs: a Gaussian splat file (`.spz`, about 2,000,000 splats and 32 MB per room) and camera-move videos. Its Chisel task paints a finished scene over a blockout (depth pictures plus cameras) and keeps the layout, so a room built in code can be repainted in place with colliders and walk targets untouched.
+- **Use it for:** fly-through videos (title background, intro cards, share clips), backdrops outside windows, and desktop-first showpieces where one place is the whole point. **Do not use it for** the rooms of a game people play on phones: two million splats per room is too heavy, and a splat cannot be lit, so characters need their own shadow catcher.
+- **Setup.** `npm install -g @worldlabsai/cli`, then the owner runs `worldlabs auth login` and pastes the key at its private prompt. **The agent never takes the key in chat and never puts it in a command.** Ask the owner to set a monthly spend limit, and report the cost before every paid run.
+- **Pipeline that worked.** Render 8 to 12 views of the room at 1280 x 720 and export linear depth plus each camera (position, quaternion, intrinsics, metres). Run `atlasChisel` on one view and show the owner that single image before spending more. Then paint the rest with the first as context, and run `posedImages2Splats` once. Drop any view whose camera sits inside an object.
+- **Costs and times measured.** One splat run: $5 and about 25 minutes. Painted images: price only visible in the platform's usage page. `worldlabs operations wait` gives up after 10 minutes while the run continues; poll `worldlabs operations get <id>` until it says done.
+- **In the browser.** Render with Spark (`SparkRenderer` plus `SplatMesh`), pinned exactly and lazy-loaded behind a flag so the normal app never downloads it. Keep the built room on screen until the splat has loaded.
+- **Never run post-processing over splats.** An effect composer redraws the scene several times a frame and each pass repaints every splat: 10 frames a second against 40 on an Apple M4. Turn effects off while a splat is showing.
+- **Test order.** Measure frame rate in the owner's real browser, not a headless one (no real graphics card), and get a real phone test of the first room before paying for a second.
 
 **Honest scoring**
 - Before and after each round, score it 1 to 10 **as a player** on ease, fun, rewarding and wow, with the specific reasons. Startup School went 4.5 (a quiz in a 3D room, no guidance) to about 8.5 by applying the rules above in that order. A 10 needs things an agent cannot judge alone (sound, feel on a real phone, fun on the third play), so say that and ask the owner to play it.
