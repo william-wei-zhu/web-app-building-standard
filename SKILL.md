@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, TypeSafe Jev, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
-version: 1.21.0
+version: 1.22.0
 license: MIT
 metadata:
   hermes:
@@ -151,6 +151,15 @@ Every site has a **logo** and a **tagline**.
 - **Header is NOT sticky**: it scrolls away with the page (don't freeze it at the top). If it floats over a full-bleed hero, pad the hero content so nothing can ever slide under it.
 - **Tight vertical rhythm.** Sections use modest padding (about `py-14 sm:py-20` at the 120% root), not `py-24 sm:py-32`. Big empty bands between sections read as "so much blank white space".
 - **Never vertically center content in a fixed-height hero.** `h-[100svh]` + `justify-center` pushes text up under the header on short windows. Let the section grow with its content (`min-h`), and below the desktop breakpoint give a hero visual its own band instead of overlaying the text.
+- **Every side bar has an adjustable width** (William, 2026-11-14, Hotel School). Any panel fixed to a side of a desktop layout (navigation, filters, a game's control column, a chat or detail pane) gets a drag handle on its inner edge. Build it this way by default, without being asked:
+  - The width is one CSS variable on the page (`--side`), and everything beside the bar is laid out from that same variable, so the bar and the content next to it can never disagree.
+  - **A minimum width** below which the bar's own controls would break (about 320 to 340px), and **a maximum** that leaves the main content most of the screen (a fixed cap, or about 60% of the window, whichever is smaller). Clamp again when the window is resized.
+  - The handle **looks draggable at rest** (a short visible pill on the edge, `cursor: col-resize`, brighter on hover and focus), with a hit area of about 12 to 16px even though the pill is thin.
+  - Drag with pointer capture on the handle (`setPointerCapture`), so the drag survives passing over a canvas, an iframe or a map. `touch-action: none` and `user-select: none` on the handle.
+  - Keyboard: `role="separator"`, `aria-orientation="vertical"`, focusable, left and right arrows move it by about 24px (stop those keys reaching anything else that listens for arrows), `Home` or a double click resets to the default.
+  - Remember the width per device (`localStorage`), applied after mount so the server-rendered page and the browser agree.
+  - Desktop only: where the bar becomes a sheet or a stacked section on a phone, there is no handle.
+  - Check it: drag past both limits, reload, reset, and confirm no horizontal scroll at any width.
 - **Mobile layout optimization is non-negotiable.** A desktop layout shrunk down is not a mobile layout. Take a real screenshot at ~**375 to 390px** and fix it before shipping. Check each item:
   - [ ] **No horizontal overflow or scrollbar.** Nothing clips at the right edge.
   - [ ] **Scale display headings down on mobile** (responsive type, e.g. `text-4xl sm:text-7xl`). Hero headings sized for desktop overflow on phones.
@@ -388,6 +397,7 @@ Apply these up front, before being asked:
 - [ ] Uniform font, color, style, weight and size within every heading and sentence; no decorative inline italics, accent words, font switches or highlights anywhere
 - [ ] Solid high-contrast color, no gray text
 - [ ] No accent bars on any edge (no `border-l` / colored top stripes on cards/callouts/blockquotes); cards/callouts one consistent light style
+- [ ] Any desktop side bar has a drag handle for its width, with a minimum and a maximum, remembered per device (§7)
 - [ ] Headlines lead with the conclusion; one focal point per view; fixed-format artifacts designed to the frame (content clamped/paginated to fit); reveals quick and one-shot, ambient motion subtle, **no periodic auto-firing effects**, `prefers-reduced-motion` honored
 - [ ] Every animation carries one clear meaning; visuals bold, big and saturated (no thin or dim dust)
 - [ ] Passes the 5-second test: H1 says what it is; sections ordered what → what's next → who → who runs it → act; each fact said once; one primary + one secondary CTA; items are icon tiles, not sentence cards
