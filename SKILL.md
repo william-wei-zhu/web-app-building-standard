@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, TypeSafe Jev, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, documentation discipline, and how to write a technical launch article about a build (structure, real facts only, screenshots, review loop). Apply on every website/web-app build."
-version: 1.24.0
+version: 1.24.1
 license: MIT
 metadata:
   hermes:
@@ -513,8 +513,8 @@ Learned writing the Startup School LinkedIn article (2026-11-15; final version i
 ### Structure (keep these section names)
 1. **Title**: "How I built NAME, a ONE-LINE DESCRIPTION OF WHAT IT IS".
 2. **Hero image** (the first screen of the product), then **one sentence with the link**: "I built [NAME](https://...), a ...". Nothing before it and nothing after it in that paragraph: no timeline, no "here's what this post covers".
-3. **Problem to Solve**: why it exists, in his voice. First the pain and why he cares (what he loves, the gap he feels, who it is for). Then what sparked the build, from a real source (a new model he wanted to try, what he saw people building on X or LinkedIn). Add a one-line disclaimer when the product borrows another organisation's name or material.
-4. **Learning 1, Learning 2, Learning 3**: three things he learned building it, one section each, headed "Learning N: PLAIN STATEMENT". Each opens with one sentence that states the learning, then concrete examples from the product, then one image. Typical spread: one about the product design, one about the AI architecture, one about user experience.
+3. **Motivation**: why it exists, in his voice. First the pain and why he cares (what he loves, the gap he feels, who it is for). Then what sparked the build, from a real source (a new model he wanted to try, what he saw people building on X or LinkedIn). Add a one-line disclaimer when the product borrows another organisation's name or material.
+4. **Learning 1, Learning 2, Learning 3**: three things he learned building it, one section each, headed "Learning N: PLAIN STATEMENT". Each opens with one sentence that states the learning and the goal it serves ("To make the game fun and educational, every lesson must be its own small game"), then concrete examples from the product, then one image. Typical spread: one about the product design, one about the AI architecture, one about user experience.
 5. **The stack** goes inside the AI learning in two or three sentences, with one delightful concrete detail, plus a paragraph crediting the tools that made the content (images, characters, music, research). No README-style list.
 6. **The first N days**: real usage numbers as a bullet list (opened, started, finished, shared, used the AI feature). Pull them from PostHog, count unique people, say the date range, and refresh them on the day he posts.
 7. **Close**: one line, the link again. No recap of the learnings, no "what I'm taking back to work", no question to bait comments.
