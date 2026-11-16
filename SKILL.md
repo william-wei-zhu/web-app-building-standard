@@ -258,7 +258,7 @@ The card has two parts: the **image** and the **share text** under it. Keep the 
 
 **The image: the full logo, nothing else.**
 - **Use the logo exactly as designed.** If the logo is a lockup (mark + wordmark), the image is the **full lockup**, so the name reads in the thumbnail; if the logo is a mark alone, use the mark. (2026-11-03: William asked for the full logo rather than the bare mark.) The wordmark is part of the logo, not added text.
-- **No other text.** No tagline, subtitle, counts, eyebrows, or decorative pills baked into the image; those go in the share text.
+- **No other text.** No tagline, subtitle, counts, eyebrows, or decorative pills baked into the image; the tagline goes in the share text.
 - **Make the logo really large**: a wide lockup spans nearly the full width (~1060 of 1200px); a square mark fills the frame height. Only a small margin either way.
 - Use a **high-resolution logo source** so it stays crisp when scaled up.
 - Standard **1200×630** on a **white** (or brand) background, as a **static PNG** rendered from the high-res logo. A static file is the most reliable card for LinkedIn, iMessage, Slack and X; use `next/og` only when the image must be dynamic.
