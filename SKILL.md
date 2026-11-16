@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
-description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, TypeSafe Jev, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, and documentation discipline. Apply on every website/web-app build."
-version: 1.22.0
+description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, TypeSafe Jev, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, documentation discipline, and how to write a technical launch article about a build (structure, real facts only, screenshots, review loop). Apply on every website/web-app build."
+version: 1.23.0
 license: MIT
 metadata:
   hermes:
@@ -501,3 +501,37 @@ Tried on Startup School (2026-11-12): two code-built rooms were repainted as spl
 - Two things at the same spot (two doors on one mat) fight for the prompt; show only the one the story needs.
 - Audio starts only after a tap or key press; start music on the same press that starts the game.
 
+
+## 25. Technical product blog posts (launch articles)
+
+Learned writing the Startup School LinkedIn article (2026-11-15; `startup-school/docs/blog/linkedin-launch/`). Use this when William asks for a post or article about something he built. §13 (no em-dashes, no company names in examples) and his prose style rules apply throughout.
+
+**Audience and length**
+- Write for product managers and AI PMs. They want why it exists, the decisions, what was cut, and one framework they can reuse at work.
+- 800 to 1,000 words of body text (about a 4-minute read) and five images. Go longer only when there is new real material (user numbers, a failure story he actually tells), never to pad.
+
+**Never invent anything.** Every claim comes from the repo (CLAUDE.md, plans, `git log` timestamps), from something William said, or from a sourced search (Exa for launch dates and model news). No made-up personal moments ("on a Tuesday night I played it and was bored"), no made-up scores or feelings, and never present the agent's own notes (a score in CLAUDE.md) as his. Where a personal beat would help, leave a marked placeholder for him to fill. Do not "correct" a fact he states (a model version) from memory; check it with Exa first.
+
+**Structure that worked**
+1. **Title**: "How I built NAME, a ONE-LINE DESCRIPTION". No clickbait.
+2. **Opening: one sentence with the link.** "I built [NAME](https://...), a ..." Nothing before it: no scene-setting, no timeline, no promise of what the post covers.
+3. **Why build it at all**: the pain point and the job to be done, in his voice (what he loves, the gap he feels), plus the technical curiosity behind it (for example, testing a new model on a hard build) and who did what (his judgment, the model's code).
+4. **Three rules, one section each**, each named as a reusable rule ("Make the lesson the mechanic", "Models write, code decides", "Delete what only shines in a demo"). Each rule leads with its argument, then 3 to 4 concrete, real examples from the product, then one image.
+5. **The stack in two or three sentences** inside a rule section, with one delightful detail (one skeleton shared by every character, one 125 KB clip). No README-style stack list.
+6. **What I'm taking back to work**: restate the three rules in one sentence, say what the human decided versus what the model did.
+7. **Close**: the link again and one question readers can answer in the comments.
+
+**Images**
+- Capture the live site with a headless browser at true sizes (check `innerWidth` against what was requested; Playwright here reports 1.5 or 1.11 times the size passed). Desktop at 1440 x 900, one phone shot at 390 x 844.
+- Seed the saved run in `localStorage` to jump straight to the scenes worth showing, run one real paid call only when a shot needs it (a scored answer), then erase the seeded run.
+- Look at every screenshot before using it; crop page sections from a viewport shot rather than an element screenshot (element shots misalign at odd scales).
+- Five images: the title or first screen, the signature mechanic, the AI moment, the architecture (the About page poster if there is one, §11), the phone view.
+
+**Where it lives**: `docs/blog/<slug>/article.md` with `images/` beside it, Markdown image links so it previews with pictures, a checklist of placeholders at the top, a pointer in the repo's CLAUDE.md, committed and pushed.
+
+**The loop**
+1. Read the repo's CLAUDE.md, plans and git log; list the true facts, numbers and dates.
+2. Draft to the structure above, then capture the images.
+3. Review it as a world-class PM reader: score clarity, fun, inspiration and AI-PM insight 1 to 10 each, list the concrete fixes (generic hook, buried best idea, repeated jokes, README sections, claims that are not quite accurate), then rewrite to a 10.
+4. Check every sentence against the facts list; anything unverifiable becomes a placeholder or goes.
+5. Save in the repo, commit and push, and tell William exactly what he still has to fill in.

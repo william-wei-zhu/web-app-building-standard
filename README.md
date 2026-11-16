@@ -35,6 +35,7 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 - **Social preview**: image is the full logo (lockup when it has a wordmark), really large on white, as a static 1200x630 PNG with no other text; title = app name, description = tagline + a one-line subtitle; defined at the site root and verified live
 - **Process**: `frontend-design` for UI, `security-review` before shipping, ship to production by default (merge to main, verify live, never ask)
 - **3D games and worlds** (when a project is one): open in the world, one obvious next step, a different mechanic per stage, every action answers back, honest 1 to 10 scoring; React Three Fiber + Rapier, rooms in code, cast generated on Higgsfield; World Labs Atlas for generated splat worlds and fly-through videos (desktop showpieces and backdrops, not phone-played rooms)
+- **Technical launch articles**: "How I built NAME" title, a one-sentence opening with the link, why it exists, three reusable rules with real examples and five live-site screenshots, 800 to 1,000 words, nothing invented, a 1 to 10 PM-reader review and rewrite loop, saved in `docs/blog/` in the repo
 - **Stack**: Vercel · Google Cloud · Gemini · TypeSafe Jev · GitHub · Exa · PostHog · Resend · Next.js + Tailwind + shadcn/ui
 
 ## How to use it
