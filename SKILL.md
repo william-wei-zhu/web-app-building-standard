@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, TypeSafe Jev, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, documentation discipline, and how to write a technical launch article about a build (structure, real facts only, screenshots, review loop). Apply on every website/web-app build."
-version: 1.23.0
+version: 1.24.0
 license: MIT
 metadata:
   hermes:
@@ -504,34 +504,50 @@ Tried on Startup School (2026-11-12): two code-built rooms were repainted as spl
 
 ## 25. Technical product blog posts (launch articles)
 
-Learned writing the Startup School LinkedIn article (2026-11-15; `startup-school/docs/blog/linkedin-launch/`). Use this when William asks for a post or article about something he built. §13 (no em-dashes, no company names in examples) and his prose style rules apply throughout.
+Learned writing the Startup School LinkedIn article (2026-11-15; final version in `startup-school/docs/blog/linkedin-launch/article.md`, which is the reference example). Use this when William asks for a post or article about something he built. §13 (no em-dashes) and his prose style rules apply throughout.
 
-**Audience and length**
-- Write for product managers and AI PMs. They want why it exists, the decisions, what was cut, and one framework they can reuse at work.
-- 800 to 1,000 words of body text (about a 4-minute read) and five images. Go longer only when there is new real material (user numbers, a failure story he actually tells), never to pad.
+**What it is for.** A short, plain, first-person story of how he built a real product: the problem, what he learned, and proof people use it. Readers are product managers and AI PMs. It is not an essay, a manifesto or a list of takeaways.
 
-**Never invent anything.** Every claim comes from the repo (CLAUDE.md, plans, `git log` timestamps), from something William said, or from a sourced search (Exa for launch dates and model news). No made-up personal moments ("on a Tuesday night I played it and was bored"), no made-up scores or feelings, and never present the agent's own notes (a score in CLAUDE.md) as his. Where a personal beat would help, leave a marked placeholder for him to fill. Do not "correct" a fact he states (a model version) from memory; check it with Exa first.
+**Length**: 700 to 900 words of body text and five images. Never pad. Every line he cut in review was decoration, not information.
 
-**Structure that worked**
-1. **Title**: "How I built NAME, a ONE-LINE DESCRIPTION". No clickbait.
-2. **Opening: one sentence with the link.** "I built [NAME](https://...), a ..." Nothing before it: no scene-setting, no timeline, no promise of what the post covers.
-3. **Why build it at all**: the pain point and the job to be done, in his voice (what he loves, the gap he feels), plus the technical curiosity behind it (for example, testing a new model on a hard build) and who did what (his judgment, the model's code).
-4. **Three rules, one section each**, each named as a reusable rule ("Make the lesson the mechanic", "Models write, code decides", "Delete what only shines in a demo"). Each rule leads with its argument, then 3 to 4 concrete, real examples from the product, then one image.
-5. **The stack in two or three sentences** inside a rule section, with one delightful detail (one skeleton shared by every character, one 125 KB clip). No README-style stack list.
-6. **What I'm taking back to work**: restate the three rules in one sentence, say what the human decided versus what the model did.
-7. **Close**: the link again and one question readers can answer in the comments.
+### Structure (keep these section names)
+1. **Title**: "How I built NAME, a ONE-LINE DESCRIPTION OF WHAT IT IS".
+2. **Hero image** (the first screen of the product), then **one sentence with the link**: "I built [NAME](https://...), a ...". Nothing before it and nothing after it in that paragraph: no timeline, no "here's what this post covers".
+3. **Problem to Solve**: why it exists, in his voice. First the pain and why he cares (what he loves, the gap he feels, who it is for). Then what sparked the build, from a real source (a new model he wanted to try, what he saw people building on X or LinkedIn). Add a one-line disclaimer when the product borrows another organisation's name or material.
+4. **Learning 1, Learning 2, Learning 3**: three things he learned building it, one section each, headed "Learning N: PLAIN STATEMENT". Each opens with one sentence that states the learning, then concrete examples from the product, then one image. Typical spread: one about the product design, one about the AI architecture, one about user experience.
+5. **The stack** goes inside the AI learning in two or three sentences, with one delightful concrete detail, plus a paragraph crediting the tools that made the content (images, characters, music, research). No README-style list.
+6. **The first N days**: real usage numbers as a bullet list (opened, started, finished, shared, used the AI feature). Pull them from PostHog, count unique people, say the date range, and refresh them on the day he posts.
+7. **Close**: one line, the link again. No recap of the learnings, no "what I'm taking back to work", no question to bait comments.
 
-**Images**
-- Capture the live site with a headless browser at true sizes (check `innerWidth` against what was requested; Playwright here reports 1.5 or 1.11 times the size passed). Desktop at 1440 x 900, one phone shot at 390 x 844.
-- Seed the saved run in `localStorage` to jump straight to the scenes worth showing, run one real paid call only when a shot needs it (a scored answer), then erase the seeded run.
-- Look at every screenshot before using it; crop page sections from a viewport shot rather than an element screenshot (element shots misalign at odd scales).
-- Five images: the title or first screen, the signature mechanic, the AI moment, the architecture (the About page poster if there is one, §11), the phone view.
+### Headings and sentences: literal beats clever
+- **A heading must make sense to a reader who skips the paragraph under it.** Name the real thing and the real tools: "Every lesson is its own game", "Use Jev to grade answers and Gemini to write replies", "Be obsessed with user experience". He rejected every compressed, clever phrasing: "Make the lesson the mechanic", "Models write, code decides", "Delete what only shines in a demo", "Rule 1". Test each heading by reading it alone.
+- **No vague abstract nouns** standing in for the idea ("this split", "the mechanic", "the loop"). Say what each part does: "let Jev and plain code decide the outcome, and let Gemini only write the words."
+- **No slogans or punchlines** that sound wise but say nothing: "The chatty model never grades you", "The demo version would have kept both", "The model brings the personality, and the code owns the outcome". Replace with "Here is how it works." and the facts.
+- **No engineering internals a reader cannot use**: pure scoring functions, timeouts and fallbacks, how routes are secured, minor UI details (a removed tag). Keep the one architecture idea readers can copy.
+- **No repetition inside a paragraph.** If "one tap" or "next lesson" appears twice, rewrite it once.
+- **Lists**: criteria, questions and steps as a numbered list; metrics as bullets; short examples as bold-lead bullets ("**Set a price:** drag a slider...").
 
-**Where it lives**: `docs/blog/<slug>/article.md` with `images/` beside it, Markdown image links so it previews with pictures, a checklist of placeholders at the top, a pointer in the repo's CLAUDE.md, committed and pushed.
+### Never invent anything
+- Every claim comes from the repo (CLAUDE.md, plans, `git log`), from something William said, or from a sourced search (Exa for launch dates and model news). No made-up moments, scores or feelings ("on a Tuesday night I played it and gave it a 4.5" was the agent's own build note and he called it fake). Never present the agent's notes as his.
+- Where a personal beat or number would help, leave a marked placeholder for him to fill. Do not "correct" a fact he states from memory; check it with Exa.
 
-**The loop**
-1. Read the repo's CLAUDE.md, plans and git log; list the true facts, numbers and dates.
-2. Draft to the structure above, then capture the images.
-3. Review it as a world-class PM reader: score clarity, fun, inspiration and AI-PM insight 1 to 10 each, list the concrete fixes (generic hook, buried best idea, repeated jokes, README sections, claims that are not quite accurate), then rewrite to a 10.
-4. Check every sentence against the facts list; anything unverifiable becomes a placeholder or goes.
-5. Save in the repo, commit and push, and tell William exactly what he still has to fill in.
+### Credit people and tools, with context
+- **Friends by first name for the ideas they gave**, said plainly: "My friend Ben told me that walking through the 3D world to reach each lesson felt like friction. So I added a Go button."
+- **Companies and tools with a few words of context** the first time: "Atlas from World Labs, Dr. Fei-Fei Li's startup". Name the tool behind each piece of content (where lessons came from, what made the images, characters and music). Music and sound are part of the product; give them a sentence.
+- **Real costs make it concrete**: "I spent $30 on ...". Get the number from him or the billing record.
+
+### Images
+- Capture the live site with a headless browser at true sizes (check `innerWidth` against what was requested; Playwright here reports 1.5 or 1.11 times the size passed, and repeated resizes can break painting, so open a fresh page after resizing). Desktop at 1440 x 900, one phone shot at 390 x 844.
+- Seed the saved run in `localStorage` to jump straight to the scenes worth showing, run one real paid call only when a shot needs it (a scored AI answer), then erase the seeded run.
+- Look at every screenshot before using it; for a page section, take a full-page shot and crop it.
+- Five images: the first screen, the signature feature, the AI moment, the architecture (the About page poster if there is one, §11), the phone view. Each image must show what the paragraph beside it describes; if an example is cut, swap the image too.
+
+### Where it lives
+`docs/blog/<slug>/article.md` with `images/` beside it, Markdown image links so it previews with pictures, a short checklist of what he must fill or refresh at the top, a pointer in the repo's CLAUDE.md, committed and pushed after every edit.
+
+### The loop
+1. Read the repo's CLAUDE.md, plans and git log, and pull the usage numbers; list the true facts, numbers, dates and costs.
+2. Draft to the structure above and capture the images.
+3. Review it as a world-class PM reader: score clarity, fun, inspiration and insight 1 to 10, list concrete fixes, rewrite. Then reread every heading and sentence against the "literal beats clever" rules.
+4. Hand it to him. He edits line by line. When he says a phrase "makes no sense", offer five concrete alternatives with one recommendation and apply his pick; when he gives a direction ("say we use Jev for evaluation"), apply it directly. When he edits the file himself, keep his wording and commit it as is.
+5. Commit and push each change, and tell him what is left to fill in (numbers to refresh, placeholders).
