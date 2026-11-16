@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
-description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-and-subtitle description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, TypeSafe Jev, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, documentation discipline, and how to write a technical launch article about a build (structure, real facts only, screenshots, review loop). Apply on every website/web-app build."
-version: 1.24.2
+description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-only description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, TypeSafe Jev, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, documentation discipline, and how to write a technical launch article about a build (structure, real facts only, screenshots, review loop). Apply on every website/web-app build."
+version: 1.25.0
 license: MIT
 metadata:
   hermes:
@@ -143,7 +143,7 @@ Every site has a **logo** and a **tagline**.
   - **Generate it with the Higgsfield image generator** (Higgsfield MCP `generate_image`) on **the newest OpenAI GPT Image model it offers**. Check with `models_explore` (`action: "list", type: "image"`) and pick the highest-numbered `gpt_image_*` id: as of 2026-11-07 that is `gpt_image_2_6` (Sunburst; `gpt_image_2_6_flare` is the alternate variant). Use `quality: "high"` and `background: "transparent"` for the mark, 1:1.
   - Generate a few candidates, let William pick, then keep the chosen image as the **reference** for every later pose, favicon and OG export so the character stays consistent. Commit the reference and the export script; raw candidates stay gitignored.
   - It must read at favicon size: one clear silhouette, big head, simple face, high contrast against the medallion/background, no text in the art.
-- **Tagline**: one clear line with **uniform typography and color throughout**, without italic or accent-colored words. It anchors the hero and the **browser tab title**. In the social card it leads the **OG/Twitter description** (followed by a one-line subtitle), with the **app name as the OG/Twitter title** (see §12).
+- **Tagline**: one clear line with **uniform typography and color throughout**, without italic or accent-colored words. It anchors the hero and the **browser tab title**. In the social card it is the whole **OG/Twitter description**, with the **app name as the OG/Twitter title** (see §12).
 
 ## 7. Layout & navigation
 
@@ -265,7 +265,7 @@ The card has two parts: the **image** and the **share text** under it. Keep the 
 
 **The share text (this is where the words go):**
 - **OG / Twitter title = the app name** (e.g. "Disruptive Quantum").
-- **OG / Twitter description = the tagline + a one-line subtitle** that says what it is (e.g. "Advancing America's quantum leadership. United States Quantum Technology Alliance."). Keep it short (~120 characters) so feeds don't truncate it. Store it once (e.g. `site.shareDescription`) and use it for the meta description too. (2026-11-03: was the tagline alone.)
+- **OG / Twitter description = the one-sentence tagline, alone** (e.g. "Run a hotel before you buy one."). No subtitle or second sentence after it. Store it once (e.g. `site.shareDescription`) and use it for the meta description too. (Corrected 2026-11-16: William asked for the tagline only. It was tagline + a one-line subtitle from 2026-11-03, and the tagline alone before that.)
 - The platform renders the title bold with the description beneath, so the words never belong inside the image.
 
 **Implementation:**
@@ -424,7 +424,7 @@ Apply these up front, before being asked:
 - [ ] (Testing) security-critical pure units covered (IP spoofing, visibility allowlist, symmetric block, SSRF filter, scheme neutralization, HMAC token); gated in CI with the built-in test runner
 - [ ] (Docs) CLAUDE.md carries inline rationale + dated corrections; each integration has a runbook doc; scaling cliffs named
 - [ ] OG image: the full logo (lockup if it has a wordmark), really large, on white, static 1200x630 PNG; no other text
-- [ ] OG/Twitter title = app name, description = tagline + one-line subtitle; preview defined at the site root (both `opengraph-image` + `twitter-image`); verified live
+- [ ] OG/Twitter title = app name, description = the one-sentence tagline alone (no subtitle); preview defined at the site root (both `opengraph-image` + `twitter-image`); verified live
 - [ ] System-default theme with a header light/dark toggle; full Light/Dark/System choice on Settings
 - [ ] Settings page reachable from every page; subpages share the home page's visual language (no bare prose)
 - [ ] Tagline set as tab title
