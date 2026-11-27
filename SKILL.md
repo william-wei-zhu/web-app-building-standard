@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-only description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, TypeSafe Jev, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, documentation discipline, and how to write a technical launch article about a build (structure, real facts only, screenshots, review loop). Apply on every website/web-app build."
-version: 1.26.0
+version: 1.27.0
 license: MIT
 metadata:
   hermes:
@@ -64,6 +64,7 @@ Big and legible. Design as if for an older reader ("easy for my grandma to read"
 - Bump the type scale: body ≈ **1.2 to 1.25rem**, with a generous body line-height (~**1.65 to 1.7**).
 - **Body text is bold by default: weight 600 (semibold), labels 700, headings 700.** Regular-weight body copy reads thin and faint on real screens. (2026-11-03: William asked to "bold all normal text" so "even my grandma can read" it.) Buttons are bold too.
 - **Derive the face from the logo.** If the logo has a wordmark, set the site in that wordmark's family (or its closest Google Font) so the type and the mark read as one brand. Characterful-for-its-own-sake display faces (wide novelty grotesks, quirky serifs) read as informal; William rejected both in favor of the wordmark's geometric sans (2026-11-03).
+- **Avoid the "generated page" look in type** (William, 2026-11-26, Product Case: "What would be more like a product management kind of font, not AI?"). A trendy serif display face paired with a geometric sans and a typewriter mono for labels (Fraunces + Outfit + DM Mono) read as AI-made. He picked **Montserrat for everything**: headings at 800, body at 600, what a character says in 500 italic, small labels in tracked caps of the same face. For a product, business or learning app, start from one plain professional sans (Montserrat first) and make hierarchy with weight and size, not a second family. The three-face recipe below is for editorial and data sites; ask before using it elsewhere.
 - **Fonts are principles, not fixed faces.** Choose per project, but always include:
   - a **characterful display face** for headings (a serif with personality works well),
   - a **highly readable body face** (editorial serif or a clean sans),
@@ -143,6 +144,8 @@ Every site has a **logo** and a **tagline**.
   - **Generate it with the Higgsfield image generator** (Higgsfield MCP `generate_image`) on **the newest OpenAI GPT Image model it offers**. Check with `models_explore` (`action: "list", type: "image"`) and pick the highest-numbered `gpt_image_*` id: as of 2026-11-07 that is `gpt_image_2_6` (Sunburst; `gpt_image_2_6_flare` is the alternate variant). Use `quality: "high"` and `background: "transparent"` for the mark, 1:1.
   - Generate a few candidates, let William pick, then keep the chosen image as the **reference** for every later pose, favicon and OG export so the character stays consistent. Commit the reference and the export script; raw candidates stay gitignored.
   - It must read at favicon size: one clear silhouette, big head, simple face, high contrast against the medallion/background, no text in the art.
+- **Show the logo and the name once per screen.** When the header carries the mark and the name, the hero or welcome card does not repeat them: no large mascot above the welcome heading, no small name label over it (William, 2026-11-27: "no need to show the large logo, because we already have the smaller logo on top", then "remove the repetitive product case").
+- **Fictional brands inside the product get logos too** (William, 2026-11-27, Product Case). When a game, case study or demo names a made-up company, generate that company's logo the same way (four candidates, pick one), keep one map from company name to logo file, and render the logo **inline before the name wherever the name appears** (one component that splits any string on the names), at about 1.7 em so it reads. In a 3D world the company also gets a sign in the room (a roll-up banner drawn on a canvas from the logo file is enough). A first mark drawn as a small app icon in a rounded square was "too small and too ugly"; the kept one was a bold symbol with no container shape, two brand colours and clean negative space. Avoid a container square and anything close to a real company's mark (a coral house reads as a famous rental brand).
 - **Tagline**: one clear line with **uniform typography and color throughout**, without italic or accent-colored words. It anchors the hero and the **browser tab title**. In the social card it is the whole **OG/Twitter description**, with the **app name as the OG/Twitter title** (see §12).
 
 ## 7. Layout & navigation
@@ -383,7 +386,7 @@ The project's own docs are part of the deliverable: they're what keeps the next 
 | Email | **Resend** (transactional email + email auth / magic links, when a project needs them) |
 | Framework | **Next.js (App Router) + Tailwind v4 + shadcn/ui** |
 | 3D (when the product is a game or a world) | **React Three Fiber + drei + Rapier**, versions pinned exactly; characters, music and props generated on **Higgsfield** (see §24) |
-| Generated 3D worlds (optional, when a project wants a photoreal or painted place) | **World Labs Atlas** (CLI `worldlabs`): images or a 3D layout in, a Gaussian splat world or a camera-move video out, shown in the browser with **Spark** (`@sparkjsdev/spark`). Desktop showpieces, videos and backdrops only, never the rooms of a phone-played game (see §24) |
+| Generated 3D worlds (when a game is set in a place) | **World Labs Atlas** (CLI `worldlabs`): images or a 3D layout in, a Gaussian splat world or a camera-move video out, shown in the browser with **Spark** (`@sparkjsdev/spark`). Since Bistro School and Product Case (2026-11) this is the bar for a game set in one place (see §24) |
 
 Workflow: **commit + push every change** (all files, not just task-related ones), and keep `CLAUDE.md` / docs in sync with code. **Ship to production by default**: merge finished work to `main` (auto-deploys production), verify it live, and report it shipped. Never ask William whether to merge or deploy. (2026-11-03: replaced "big redesigns wait for approval on a branch preview"; a preview branch is fine as a working step, not a gate.)
 
@@ -436,6 +439,7 @@ Apply these up front, before being asked:
 - [ ] `security-review` run before shipping
 - [ ] No em-dashes, no company names
 - [ ] Stack: Vercel · Google Cloud · Gemini · TypeSafe Jev (typed decisions, when needed) · GitHub · Exa · PostHog · Resend (email/auth, when needed)
+- [ ] (Games) first screen already at the reference bar (photoreal room, generated characters, themed left panel), no home page, a tour of about four short steps that ends inside the first action, hints one per row, an optional name, a server-scored leaderboard, music and voices on separate switches, walking plus tap-to-go, every fictional brand with its own logo shown inline and in the world (§24, §6)
 - [ ] If it is a 3D game or world: §24 applied (opens in the world, one obvious next step, a different mechanic per stage, every action answers back, honest 1 to 10 score before and after)
 - [ ] Committed, merged to main, deployed to production and verified live, docs updated (no merge/deploy approval step)
 
@@ -447,6 +451,10 @@ Apply these up front, before being asked:
 - He asks **"how would you rate this 1 to 10?"**: give an honest number per dimension (visual design, UI, UX), the specific reasons, and the concrete steps that would reach 9-10. Don't inflate.
 - **Facts about William and his projects**: confirm with him rather than copying from his own sites, which can lag (club size, titles).
 - He sends **rapid feedback while you work**. Address every message, in order, and say which item each change answers. When he says a section is ugly or confusing, replace the concept, don't polish it.
+- **Generated art and audio: show candidates, let him pick.** Four logo or mascot candidates, four music samples in different styles, then make the full set only in the style he chose. Report the credit cost before each paid batch, and say when credits ran out instead of silently shipping fewer.
+- **Prose goes to a writing model** (William, 2026-11-26: "Opus 5.5 is better at writing than Fable 5.2"): game dialogue, tour lines, UI copy, About and Privacy pages and articles are written by an Opus subagent briefed with the facts and these voice rules; code stays with the main agent. Check every fact it states against the code before shipping (it guessed what the analytics records).
+- **Every project gets its own keys and accounts.** A new Google Cloud project and a new Gemini key per app (William: "Don't reuse the same Gemini key. Create a new key for the project."), its own PostHog project, its own bucket. Never copy a key from a sibling project.
+- **When a planning question offers a cheaper visual option, say plainly how it will look next to the reference.** On Product Case he picked "code-built 3D office" in a question and then called the result "absolute garbage compared with bistro school": what he meant by the bar was the earlier project's look.
 - **Third-party dashboards (Resend, PostHog, and similar) sign in with Google as wzhu1997@gmail.com.** When a browser session has expired, use the site's "Continue with Google" button in his Chrome and pick that account; never type a password. Do the setup yourself (domains, keys, projects) rather than handing him console steps.
 
 ## 24. 3D games and walkable worlds (when a project is one)
@@ -455,6 +463,7 @@ Learned building Startup School (startupschool.app, 2026-11), a walkable 3D game
 
 **Stack and setup**
 - **React Three Fiber + drei + Rapier** on the WebGL renderer, with a third-person controller (`ecctrl`). **Pin every version exactly**: the 3D packages have tight peer ranges and a caret breaks the build months later. Load the game with `dynamic(..., { ssr: false })`; it never renders on the server.
+- **Correction (2026-11-26, Product Case): when the game is set in a real-looking place, primitives are not good enough.** A code-built office with people made of shapes was called "absolute garbage compared with bistro school". The bar is Bistro School: a photoreal World Labs Atlas room, generated realistic characters, a themed panel on the left. Never show a text-only build or shape people as progress; build the headline experience first and show it only at that bar. The two bullets below are Startup School's history (a cartoon world on phones).
 - **Build rooms in code from primitives in one flat palette**, not from a mixed asset catalog. It matches generated low-poly characters, costs nothing, and you own the colliders. Use a **dollhouse shell**: inward-facing single-sided walls, no ceiling, open toward the camera, and the same footprint for every room so camera rules carry over.
 - **Generate the cast, not the rooms.** Concept image in a strict A-pose from one style reference, then image-to-3D with rigging. All characters from one pipeline share a skeleton, so buy each animation once and reuse it as an animation-only file. Check the preview of a clip before paying for it. Report the credit cost before each batch.
 - **State**: one small store for the world (mode, place, who you are talking to) and one persisted store for the run. Per-frame values (player position) live outside React state. Never return a new object from a store selector that a render reads: it loops.
@@ -497,6 +506,41 @@ Tried on Startup School (2026-11-12): two code-built rooms were repainted as spl
 - **In the browser.** Render with Spark (`SparkRenderer` plus `SplatMesh`), pinned exactly and lazy-loaded behind a flag so the normal app never downloads it. Keep the built room on screen until the splat has loaded.
 - **Never run post-processing over splats.** An effect composer redraws the scene several times a frame and each pass repaints every splat: 10 frames a second against 40 on an Apple M4. Turn effects off while a splat is showing.
 - **Test order.** Measure frame rate in the owner's real browser, not a headless one (no real graphics card), and get a real phone test of the first room before paying for a second.
+
+**Lessons from Product Case (2026-11-26 and 27, a voice role-play case in a splat office)**
+
+*Onboarding and flow*
+- **No home page and no level picker.** The case opens at once; a saved run resumes. One mode for everyone with the coaching on (William removed "Advanced mode": a toggle nobody needs is a decision nobody should have to make).
+- **The tour is four short spoken steps, not thirteen** ("It's like 13 pages... too much text"). Who you are and where, the problem and your job, how to play, go. About 20 words a step, one line of welcome on the cover card ("Welcome to your first week as a product manager"), heading in a modest size.
+- **The tour ends inside the first real action, never on a separate picking page** ("We don't even need a separate page where users pick who to talk to first"). The last button opens the first conversation with one character already chosen; a chip per character at the top of the panel switches between them.
+- **Never draw a copy of a control in the tour.** A picture of the talk button on a tour card looked pressable and confused him. Say the how-to line over the real control, in the real screen, so the player can press it at once.
+- **An optional name box on the welcome card** ("Your name (you can skip this)"), saved as typed, editable in Settings, used later for the leaderboard.
+
+*Panels and text*
+- **Hint and suggestion chips stack one per row**, full width, never a horizontal scroll row: side by side they were cut off. Treat them as coaching (half-written questions the player finishes).
+- **Keep a sticky input box small.** Hints inside a sticky footer made it taller than the panel and it covered the conversation; put hints below it.
+- **A new screen in a scrolling panel opens at the top.** The panel keeps the scroll of whatever was there before (the tour, the last character, the call screen) unless the code resets it.
+
+*The world*
+- **Let the player walk, and keep the shortcut** (William: "possible for users to walk around in the 3d world, like that in bistro school"). Bistro School's first-person controller: drag to look, W A S D or arrows, Q and E to turn, click the floor to walk there, a thumbstick on touch screens, all on a floor map that slides along edges. Picking a person still walks the player over; any key takes over. A floor map can be a measured box with holes cut round furniture and people when the room is one open hall.
+- **Dragging pulls the picture on both axes**: drag down and the room comes down with your hand. Left and right that way, up and down the other, felt wrong.
+- **Furniture is generated per piece**: a concept image in the room's own materials, then **Tripo image-to-3D (9 credits), not Meshy (38)**; props need no skeleton. Scale each to a real length in metres, stand it on the floor, force materials matte (a splat room gives metal nothing to reflect). One list of what stands where.
+- **Cast every role from the start and mind who they are.** Concept art for hosts, colleagues and users of each product; a mix of people. The founder and CEO is a woman (William: "I don't want the ceo to be a white male"); keep a rejected portrait under a name that says so, so it is not reused.
+- **A headless browser cannot draw two million splats** (screenshots hang): keep a `?still` switch that shows the room's picture, and check the real 3D in real Chrome.
+
+*AI characters*
+- **Give every character the situation (the premise) in every prompt**, and only the facts the player has earned. Without the premise a character asked about something not yet revealed denied their own situation.
+- **The most important checks are about leaks, not tone**: a canary string per hidden fact, allowed only in the speaking character's own revealed facts.
+
+*Sound*
+- **Music: soft, slow and chosen by him.** Four samples first; he kept soft felt piano and slow lo-fi and rejected ambient plucks and fingerpicked guitar as "too fast paced". Prompts that worked: "very soft, minimal", 60 to 72 bpm, no drums (or a hi-hat far in the background), "constant gentle low volume so speech on top stays clear". **Ten tracks is enough** (William), shuffled, levelled to one loudness, faded at both ends. Play it far under the voices, duck it while anyone speaks and while the microphone records (or the mic hears it).
+- **Music and voices are separate switches** in the game menu and on Settings (William). One "Sound" switch for both is not enough.
+
+*Leaderboard*
+- **A leaderboard and a player name, as on Bistro School.** One board per case: top ten, the player's row filled in, "You are number N of M". The browser never sends a score: the server loads the stored run, checks it belongs to the signed player cookie (404 otherwise), needs the run finished, and computes the score itself. Names: letters, numbers and spaces, 3 to 16, a blocked-word list read after look-alike digits, one owner per name, a made-up default so posting takes one tap. Nothing is posted until the player presses the button; Settings can remove them. Its own `/leaderboard` page, linked in the footer.
+
+*Renaming a live product*
+- **Move the domain, keep the internal ids.** New domain as production, old one 308-redirects to it, origin checks accept both for a while, and the bucket's CORS list gets the new origin (or a splat room silently fails to load). Leave repo, cloud project, bucket and storage-key names alone; renaming them only risks breakage.
 
 **Honest scoring**
 - Before and after each round, score it 1 to 10 **as a player** on ease, fun, rewarding and wow, with the specific reasons. Startup School went 4.5 (a quiz in a 3D room, no guidance) to about 8.5 by applying the rules above in that order. A 10 needs things an agent cannot judge alone (sound, feel on a real phone, fun on the third play), so say that and ask the owner to play it.
