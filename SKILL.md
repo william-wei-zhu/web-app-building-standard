@@ -1,7 +1,7 @@
 ---
 name: web-app-building-standard
 description: "William's standard for building web apps: simplicity-first, large, bold & high-contrast type, lead-with-the-conclusion hierarchy, cute-animal mascot logo (Higgsfield, newest GPT Image model) + tagline branding, showcase sites that demonstrate instead of describe (one bold, legible signature visual; no overlapping text), designed empty/loading/error/invalid states, generated-content honesty + prompt-injection defense, pagination, full-logo OG image with name title + tagline-only description, required privacy page, an optional hidden technical walk-through page, and a fixed stack (Vercel, Google Cloud, Gemini, TypeSafe Jev, GitHub, Exa, PostHog). Also covers the backend layer: auth & identity, access control & abuse (allowlist gating, SSRF-hardening, trusted-IP rate limits, fail-closed gates), transactional email & notifications, data integrity, deploy & infra gotchas, security-critical testing, documentation discipline, and how to write a technical launch article about a build (structure, real facts only, screenshots, review loop). Apply on every website/web-app build."
-version: 1.25.0
+version: 1.26.0
 license: MIT
 metadata:
   hermes:
@@ -468,11 +468,22 @@ Learned building Startup School (startupschool.app, 2026-11), a walkable 3D game
 - **Polish the world in code before spending on art.** Light, scenery and surfaces fill most of every frame and cost nothing: a light pool on the floor, a sheet of light from each window, a cool rim light from behind so characters lift off the walls, distance haze, a soft blob under every character, scenery behind the walls (the camera looks in from the front, so the strip above the back wall is whatever stands behind the room), floors, walls and rugs drawn on a canvas, a small bevel on every box, a few props, and slow ambient motion (swaying plants, steam, a clock that shows the real time). Do it in passes and have a real phone look at each one.
 - **Bound every glow, and check effects on a real phone.** Bloom spreads any very bright pixel across the screen. A library particle effect whose brightness is `something / distance` has no upper limit at the centre; drawn additively with bloom on, it made the whole screen flash on a phone while the laptop and every emulated check looked fine. Write particles so a speck is never brighter than its colour, never more than a few pixels wide, and fades out before it nears the camera. Emulation and a desktop GPU cannot clear a new post-processing or additive effect; only a phone can.
 - **Game overlays stay out of the play area.** Timers, counters and Go chips for a game sit small in a corner on desktop (top left, under the stats bar) and in one compact row under the header on phones, with one-word labels. If a strip covers what the player is meant to look at, it is too big.
-- **Every action answers back**: characters cheer or slump, numbers count up and flash, stars land one by one, confetti on a win, a sound for win, lose and step. Synthesize small sounds in code; generate music.
+- **Every action answers back**: characters cheer or slump, numbers count up and flash, stars land one by one, confetti on a win, a sound for win, lose and step. Synthesize small sounds in code; generate music; clean every generated voice (see "Generated voices" below).
 - **The world shows the state.** Numbers in a bar are not enough: put users on a wall, leave objects behind after each stage, change the room when the company changes.
 - **Do not spoil the outcome** before the payoff plays. Let the player take an answer back.
 - **An arc and an ending**: a fixed number of stages, a finale, a grade, something to copy and share, and a game-over that offers to take back the last move.
 - **Music needs variety and a mute.** Twenty short tracks shuffled per session, quiet, ducked under speech, with on/off and next. One loop drives people away.
+
+**Generated voices: cut the noise off both ends, and listen to every take** (learned on ProductMBA, 2026-11-26; William: "trim the beginning and the end. There are some buzzing noises.")
+- **Generated speech arrives with noise around the words.** Measured on Gemini TTS: every clip ended with about half a second of silence and then a loud buzz of about 160 ms, and several began with a click or a hiss before the first word. Never play or ship raw model audio.
+- **Measure before you cut.** Print the loudness of the first and last second in 10 ms windows and look at the pattern. A cut made on a guess either misses the noise or eats a word.
+- **Tell noise from a word by more than loudness.** The buzz was as loud as the speech, so a volume threshold kept it. It was noise because it was short, set apart by a real silence, as loud as the loudest part of the line, and pure hiss (many zero crossings a window, where a vowel has few). All four together. Short plus apart plus hissy alone cut the last word off a line ("decided": a soft hiss in its middle, after a pause).
+- **Keep a little room and fade both ends.** About 40 ms before the first word and 150 ms after the last, a 15 ms fade in and a 90 ms fade out, so nothing clicks and no word is clipped.
+- **Do the same for speech that is played as it arrives.** Pass the sound on as it comes but hold back the last 0.9 seconds, and clean that tail once the line is complete. Speech arrives faster than it plays, so this delays nothing.
+- **Listen to every take, by machine.** Transcribe each recorded clip back and compare its first two words and its last word with the script; throw away and re-record a take that fails. This caught a trim that ate a word, and a take where the voice read its own delivery tag aloud ("warmly, these are..."). Keep it as a script and run it after every re-recording.
+- **Record fixed lines once and serve them as files** (a tour, a recurring line): no cost per visitor and no wait. Speak live only what changes with the player.
+- **Delivery tags stay a single adverb in brackets.** Longer direction gets read aloud, and now and then even one word does, which is what the read-back check is for.
+- Put the cleaning in one pure function shared by the recording script and the live route, with unit tests built from stand-ins (a low tone for a voice, noise for the buzz, silence for the gaps).
 
 **Generated worlds: World Labs Atlas (optional)**
 
