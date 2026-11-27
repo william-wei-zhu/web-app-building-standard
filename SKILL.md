@@ -474,7 +474,7 @@ Learned building Startup School (startupschool.app, 2026-11), a walkable 3D game
 - **An arc and an ending**: a fixed number of stages, a finale, a grade, something to copy and share, and a game-over that offers to take back the last move.
 - **Music needs variety and a mute.** Twenty short tracks shuffled per session, quiet, ducked under speech, with on/off and next. One loop drives people away.
 
-**Generated voices: cut the noise off both ends, and listen to every take** (learned on ProductMBA, 2026-11-26; William: "trim the beginning and the end. There are some buzzing noises.")
+**Generated voices: cut the noise off both ends, and listen to every take** (learned on Product Case, 2026-11-26; William: "trim the beginning and the end. There are some buzzing noises.")
 - **Generated speech arrives with noise around the words.** Measured on Gemini TTS: every clip ended with about half a second of silence and then a loud buzz of about 160 ms, and several began with a click or a hiss before the first word. Never play or ship raw model audio.
 - **Measure before you cut.** Print the loudness of the first and last second in 10 ms windows and look at the pattern. A cut made on a guess either misses the noise or eats a word.
 - **Tell noise from a word by more than loudness.** The buzz was as loud as the speech, so a volume threshold kept it. It was noise because it was short, set apart by a real silence, as loud as the loudest part of the line, and pure hiss (many zero crossings a window, where a vowel has few). All four together. Short plus apart plus hissy alone cut the last word off a line ("decided": a soft hiss in its middle, after a pause).
