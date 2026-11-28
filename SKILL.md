@@ -12,7 +12,7 @@ metadata:
 
 # William's Web App Building Standard
 
-A reusable standard for building small, polished public web apps. It exists so the same refinements don't have to be re-requested on every new project. **Apply these by default; deviate only with a stated reason.** Defaults below are adaptable baselines (the [pbcindex](https://pbcindex.com) site is the reference implementation), not the only valid choices.
+A reusable standard for building small, polished public web apps. It exists so the same refinements don't have to be re-requested on every new project. **Apply these by default; deviate only with a stated reason.** Defaults below are adaptable baselines ([Bistro School](https://bistroschool.app) is the reference implementation), not the only valid choices.
 
 The single most important rule: **simplify**.
 

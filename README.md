@@ -47,10 +47,9 @@ The full standard lives in **[`SKILL.md`](./SKILL.md)**.
 2. **Use it as an agent skill.** Drop `SKILL.md` into your skills directory (e.g. `~/.hermes/skills/software-development/web-app-building-standard/SKILL.md`) so it activates on web/frontend work.
 3. **Read it directly.** Open [`SKILL.md`](./SKILL.md) before starting a new site.
 
-## Reference implementations
+## Reference implementation
 
-- [pbcindex.com](https://pbcindex.com): an open index of U.S. mission-locked companies, the reference for the **frontend/design** conventions.
-- [beinorbit.com](https://beinorbit.com) (InOrbit): a semantic double-opt-in intro engine, the reference for the **backend** patterns (auth & identity, access control & abuse, transactional email & notifications, data integrity, deploy & infra).
+- [bistroschool.app](https://bistroschool.app) (Bistro School): a 10-minute restaurant-management game, the example of what a good build looks like across both the **frontend/design** conventions and the **backend** patterns.
 
 ## License
 
